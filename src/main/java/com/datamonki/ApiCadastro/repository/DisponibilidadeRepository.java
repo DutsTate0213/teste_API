@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.datamonki.ApiCadastro.dto.DisponibilidadeDto;
 import com.datamonki.ApiCadastro.model.Disponibilidade;
 
 import jakarta.transaction.Transactional;
@@ -19,9 +18,11 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
     Integer getNumDisponibilidadeProfessor(@Param("idProfessor") Integer idProfessor);
 
 
+
     @Query (value = "SELECT  CASE WHEN COUNT(*) >0 THEN true ELSE false END " +
             "FROM  disponibilidade WHERE id_professor=:idProfessor", nativeQuery = true)
     Boolean verifyDisponibilidadeProfessor(@Param("idProfessor") Integer idProfessor);
+
 
     
     @Query (
@@ -29,11 +30,15 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
                     " FROM disponibilidade"  +
                     " WHERE id_professor=:idProfessor AND id_dia_semana=:idDiaSemana AND id_turno=:idTurno " +
                     " AND semestre=:semestre AND ano=:ano AND id_disciplina =:idDisciplina", nativeQuery = true)
-    Boolean verifyRepeticao(@Param("idProfessor")
-                            Integer idProfessor, @Param("idDiaSemana") Integer idDiaSemana,
+    Boolean verifyRepeticao(@Param("idProfessor") Integer idProfessor, 
+                            @Param("idDiaSemana") Integer idDiaSemana,
                             @Param("idTurno") Integer idTurno,
-                            @Param("semestre") Integer semestre, @Param("ano") Integer ano, @Param("idDisciplina") Integer idDisciplina
-                            );
+                            @Param("semestre") Integer semestre, 
+                            @Param("ano") Integer ano, 
+                            @Param("idDisciplina") Integer idDisciplina);
+
+
+
 
     @Query (value = "SELECT * FROM  disponibilidade WHERE id_professor=:idProfessor", nativeQuery = true)
     List<Disponibilidade> findByIdProfessor(@Param("idProfessor") Integer idProfessor);
@@ -49,7 +54,9 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
     @Modifying
     @Transactional
     @Query (value = "DELETE FROM  disponibilidade WHERE id_professor=:idProfessor AND semestre=:semestre AND ano=:ano", nativeQuery = true)
-    void deleteByIdProfessorAnoSem(@Param("idProfessor") Integer idProfessor, @Param("ano") Integer ano, @Param("semestre") Integer semestre);
+    void deleteByIdProfessorAnoSem(@Param("idProfessor") Integer idProfessor, 
+                                   @Param("ano") Integer ano, 
+                                   @Param("semestre") Integer semestre);
 
     
     
