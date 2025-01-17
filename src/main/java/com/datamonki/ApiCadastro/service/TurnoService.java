@@ -20,7 +20,7 @@ public class TurnoService {
     
     private void verificarId(Integer id) {
         if (!turnoRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar turno com o Id '" + id + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há turno registrado com o id: " + id + ", verifique e tente novamente"); 
         }
     }
 

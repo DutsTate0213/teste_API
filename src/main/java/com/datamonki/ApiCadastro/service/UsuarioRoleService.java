@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.datamonki.ApiCadastro.dto.UsuarioDto;
 import com.datamonki.ApiCadastro.dto.UsuarioRoleDto;
+import com.datamonki.ApiCadastro.exceptions.IdNotFoundException;
 import com.datamonki.ApiCadastro.exceptions.ValidationException;
 import com.datamonki.ApiCadastro.model.Role;
 import com.datamonki.ApiCadastro.model.Usuario;
@@ -20,48 +20,60 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class UsuarioRoleService {
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+
 	@Autowired
 	private RoleRepository roleRepository;
 
 	private void verificar(UsuarioRoleDto dto) {
 		List<String> messages = new ArrayList<>();
+
 		if (dto.usuarioId() == null) {
-			messages.add("O campo  idUsuario está vazio");
-		}else if (dto.roleId() == null) {
-			messages.add("O campo  role está vazio");
-		}else if(usuarioRepository.findById(dto.usuarioId()).isEmpty()) {
-			messages.add("Usuário  não cadastrado");
-		}else if(roleRepository.findById(dto.roleId()).isEmpty()) {
-			messages.add("Role não cadastrada");
-		}	
-		
+			throw new IdNotFoundException(
+					"Não há usuário registrado com o id: " + dto.usuarioId() + ", verifique e tente novamente");
+		}
+
+		if (dto.roleId() == null) {
+			throw new IdNotFoundException(
+					"Não há role registrada com o id: " + dto.roleId() + ", verifique e tente novamente");
+		}
+
+		if (!usuarioRepository.findById(dto.usuarioId()).isPresent()) {
+			throw new IdNotFoundException(
+					"Não há usuário registrado com o id: " + dto.usuarioId() + ", verifique e tente novamente");
+		}
+
+		if (!roleRepository.findById(dto.roleId()).isPresent()) {
+			throw new IdNotFoundException(
+					"Não há role registrada com o id: " + dto.roleId() + ", verifique e tente novamente");
+		}
+
 		if (!messages.isEmpty()) {
 			throw new ValidationException(messages);
 		}
 	}
-	//Uma maneira diferente de adcionar mais um elemento em uma tabela intermediária com spring
+
+	// Uma maneira diferente de adcionar mais um elemento em uma tabela
+	// intermediária com spring
 	@Transactional
-    public ResponseEntity<ApiResponse> adicionarRoleAoUsuario(UsuarioRoleDto dto) {
-		
+	public ResponseEntity<ApiResponse> adicionarRoleAoUsuario(UsuarioRoleDto dto) {
 		verificar(dto);
 		Usuario usuario = usuarioRepository.findById(dto.usuarioId()).get();
-		Role role =  roleRepository.findById(dto.roleId()).get();
+		Role role = roleRepository.findById(dto.roleId()).get();
 		usuario.getRole().add(role);
 		return ResponseEntity.ok(new ApiResponse("Acesso concedido com sucesso", usuario.getUsername()));
 	}
-	
-	//Uma maneira diferente de remover um elemento da tabela intermediária com spring
+
+	// Uma maneira diferente de remover um elemento da tabela intermediária com
+	// spring
 	@Transactional
-    public ResponseEntity<ApiResponse> removerRoleDoUsuario(UsuarioRoleDto dto) {
+	public ResponseEntity<ApiResponse> removerRoleDoUsuario(UsuarioRoleDto dto) {
 		verificar(dto);
 		Usuario usuario = usuarioRepository.findById(dto.usuarioId()).get();
-		Role role =  roleRepository.findById(dto.roleId()).get();
+		Role role = roleRepository.findById(dto.roleId()).get();
 		usuario.getRole().remove(role);
 		return ResponseEntity.ok(new ApiResponse("Acesso removido com sucesso", usuario.getUsername()));
 	}
-	
-	
 }

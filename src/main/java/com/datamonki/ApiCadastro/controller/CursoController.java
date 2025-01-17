@@ -18,14 +18,14 @@ import com.datamonki.ApiCadastro.service.CursoService;
 
 //Classe que representa o controller, responsavel pelas requisicoes de curso para a api
 @RestController
-@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
-@RequestMapping("/api/curso")
+@RequestMapping("/curso")
 public class CursoController {
 	
 	@Autowired
 	private CursoService cursoService;
 	
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
 	public ResponseEntity<ApiResponse> create(@RequestBody CursoDto cursoDto){
 
 		return cursoService.create(cursoDto);
@@ -50,18 +50,21 @@ public class CursoController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> delete(@PathVariable Integer id){
 
 		return cursoService.deleteById(id);
 	}
 	
 	@DeleteMapping
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> delete(){
 
 		return cursoService.deleteAll();
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN', 'ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody CursoDto cursoDto){
 
 		return cursoService.update(id, cursoDto);

@@ -16,7 +16,7 @@ import com.datamonki.ApiCadastro.response.ApiResponse;
 import com.datamonki.ApiCadastro.service.ProfessorService;
 
 @RestController
-@RequestMapping("/api/professor")
+@RequestMapping("/professor")
 public class ProfessorController {
 	
 	@Autowired

@@ -9,7 +9,7 @@ import com.datamonki.ApiCadastro.response.ApiResponse;
 import com.datamonki.ApiCadastro.service.MatrizService;
 
 @RestController
-@RequestMapping("/api/matriz")
+@RequestMapping("/matriz")
 public class MatrizController {
     
     @Autowired

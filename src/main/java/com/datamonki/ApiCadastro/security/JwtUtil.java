@@ -7,18 +7,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
 
 @Component
 public class JwtUtil {
+	
 	@Value("${spring.boot.security.jwt.secret}")
 	private String secret;
 	
 	@Value("${spring.boot.security.jwt.expiration}")
 	private long expirationTime;
 	
+
 	private Key getSigningKey() {
 		byte[] keyBytes = Decoders.BASE64.decode(secret);
 		return Keys.hmacShaKeyFor(keyBytes);
@@ -37,14 +38,17 @@ public class JwtUtil {
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
     }
+
     //Validação se o nome do usuário está correta condizente com o do toke, caso não tenha espirado
     public boolean validateToken(String token, String userName) {
     	return userName.equals(extractUsername(token)) && !isTokenExpired(token);
     }
+
     //Caso o token tenha espirado retorna true
     private boolean isTokenExpired(String token) {
     	return getClaims(token).getExpiration().before(new Date());
     }
+
     //Usa chave para verificar a integridade do token e decodifica o toke, para puxar as informações do payload
     private Claims getClaims(String token) {
     	return Jwts.parserBuilder()

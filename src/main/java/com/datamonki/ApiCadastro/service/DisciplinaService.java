@@ -37,13 +37,13 @@ public class DisciplinaService {
 
     private void verificarId(Integer id) {
         if (!disciplinaRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar disciplina com o Id '" + id + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há disciplina registrada com o id: " + id + ", verifique e tente novamente"); 
         }
     }
 
     private void verificarNome(String nome) {
         if (disciplinaRepository.findByNomeContainingIgnoreCase(nome).isEmpty()) {
-            throw new IdNotFoundException("Não foi possivel encontrar a disciplina com o nome de '" + nome + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há disciplina registrada com o nome: " + nome + ", verifique e tente novamente"); 
         }
     }
 

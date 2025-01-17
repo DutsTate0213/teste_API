@@ -46,26 +46,29 @@ public class DisponibilidadeService {
 	
 	//Verificar se os atributos passados estão corretos e se os ids de fato existem no banco
 	private void verificar(DisponibilidadeDto disponibilidadeDto) {
-		List<String> messages = new ArrayList<String>();
+		List<String> messages = new ArrayList<>();
 
 		if(!professorRepository.existsById(disponibilidadeDto.idProfessor())){
-			messages.add("Não há professor registrado com o id:"+ disponibilidadeDto.idProfessor() + " verifique e tente novamente");
+			throw new IdNotFoundException("Não há professor registrado com o id:"+ disponibilidadeDto.idProfessor() + " verifique e tente novamente");
 		}
-		else if(!disciplinaRepository.existsById(disponibilidadeDto.idDisciplina())) {
-			messages.add("Não há disciplina registrada com o id:"+ disponibilidadeDto.idDisciplina() + " verifique e tente novamente");
+		if(!disciplinaRepository.existsById(disponibilidadeDto.idDisciplina())) {
+			throw new IdNotFoundException("Não há disciplina registrada com o id:"+ disponibilidadeDto.idDisciplina() + " verifique e tente novamente");
 		}
-		else if(!turnoRepository.existsById(disponibilidadeDto.idTurno())) {
-			messages.add("Não há turno registrado com o id:"+ disponibilidadeDto.idTurno() + " verifique e tente novamente");
+		if(!turnoRepository.existsById(disponibilidadeDto.idTurno())) {
+			throw new IdNotFoundException("Não há turno registrado com o id:"+ disponibilidadeDto.idTurno() + " verifique e tente novamente");
 		}
-		else if(!diaSemanaRepository.existsById(disponibilidadeDto.idDiaSemana())) {
-			messages.add("Não há dia da semana registrado com o id:"+ disponibilidadeDto.idDiaSemana() + " verifique e tente novamente");
+		if(!diaSemanaRepository.existsById(disponibilidadeDto.idDiaSemana())) {
+			throw new IdNotFoundException("Não há dia da semana registrado com o id:"+ disponibilidadeDto.idDiaSemana() + " verifique e tente novamente");
 		}
-		else if(disponibilidadeRepository.verifyRepeticao(disponibilidadeDto.idProfessor(), disponibilidadeDto.idDiaSemana(), 
+		if(disponibilidadeRepository.verifyRepeticao(disponibilidadeDto.idProfessor(), disponibilidadeDto.idDiaSemana(), 
 				disponibilidadeDto.idTurno(), disponibilidadeDto.semestre(), disponibilidadeDto.ano(), disponibilidadeDto.idDisciplina())) {
 			messages.add("Disponibilidade já registrada");
 		}
-		else if(disponibilidadeDto.semestre() < 1 || disponibilidadeDto.semestre() > 2) {
+		if(disponibilidadeDto.semestre() < 1 || disponibilidadeDto.semestre() > 2) {
 			messages.add("Só são permitidos primeiro e segundo semestre.");
+		}
+		if(disponibilidadeDto.ano() < 2010 || disponibilidadeDto.ano() > 2050) {
+			messages.add("O ano deve estar entre 2010 e 2050");
 		}
 		
 		if(!messages.isEmpty()) {

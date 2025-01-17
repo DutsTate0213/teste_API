@@ -30,19 +30,19 @@ public class MatrizService {
 
     private void verificarIdMatriz(Integer id) {
         if (!matrizRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar matriz com o Id '" + id + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há matriz registrada com o id: " + id + ", verifique e tente novamente"); 
         }
     }
 
     private void verificarIdDisciplina(Integer id) {
         if (!disciplinaRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar disciplina com o Id '" + id + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há disciplina registrada com o id: " + id + ", verifique e tente novamente"); 
         }
     }
 
     private void verificarIdTurma(Integer id) {
         if (!turmaRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar turma com o Id '" + id + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há turma registrada com o id: " + id + ", verifique e tente novamente"); 
         }
     }
 

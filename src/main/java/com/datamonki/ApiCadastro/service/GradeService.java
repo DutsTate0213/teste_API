@@ -27,13 +27,13 @@ public class GradeService {
 
     private void verificarIdGrade(Integer id) {
         if (!gradeRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar grade com o Id '" + id + "', verifique e tente novamente");
+            throw new IdNotFoundException("Não há grade registrada com o id: " + id + ", verifique e tente novamente");
         }
     }
 
     private void verificarIdTurma(Integer id) {
         if (!turmaRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar turma com o Id '" + id + "', verifique e tente novamente");
+            throw new IdNotFoundException("Não há turma registrada com o id: " + id + ", verifique e tente novamente");
         }
     }
 

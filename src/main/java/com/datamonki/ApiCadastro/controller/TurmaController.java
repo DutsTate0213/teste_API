@@ -9,7 +9,7 @@ import com.datamonki.ApiCadastro.dto.TurmaDto;
 import com.datamonki.ApiCadastro.response.ApiResponse;
 
 @RestController
-@RequestMapping("/api/turma")
+@RequestMapping("/turma")
 public class TurmaController {
 
     @Autowired

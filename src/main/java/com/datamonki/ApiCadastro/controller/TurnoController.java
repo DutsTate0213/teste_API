@@ -11,7 +11,7 @@ import com.datamonki.ApiCadastro.response.ApiResponse;
 import com.datamonki.ApiCadastro.service.TurnoService;
 
 @RestController
-@RequestMapping("/api/turno")
+@RequestMapping("/turno")
 public class TurnoController {
     
     @Autowired

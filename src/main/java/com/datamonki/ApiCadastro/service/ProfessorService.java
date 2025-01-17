@@ -30,6 +30,7 @@ public class ProfessorService {
         } else if (professorDto.nome().length() < 3 || professorDto.nome().length() > 255) {
             messages.add("A coluna nome deve estar entre 3 a 255 caracteres");
         }
+        
         if (!messages.isEmpty()) {
             throw new ValidationException(messages);
         }
@@ -37,13 +38,13 @@ public class ProfessorService {
 
     private void verificarId(Integer id) {
         if (!professorRepository.existsById(id)) {
-            throw new IdNotFoundException("Não foi possivel encontrar professor com o Id '" + id + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há professor registrado com o id: " + id + ", verifique e tente novamente"); 
         }
     }
 
     private void verificarNome(String nome) {
         if (professorRepository.findByNomeContainingIgnoreCase(nome).isEmpty()) {
-            throw new IdNotFoundException("Não foi possivel encontrar o professor com o nome de '" + nome + "', verifique e tente novamente"); 
+            throw new IdNotFoundException("Não há professor registrado com o nome: " + nome + ", verifique e tente novamente"); 
         }
     }
     

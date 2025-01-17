@@ -8,9 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,11 +27,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "usuarios")
 public class Usuario implements UserDetails{
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
+
     private String password;
     
     @ManyToMany(fetch = FetchType.EAGER)
@@ -47,8 +46,6 @@ public class Usuario implements UserDetails{
         this.password = password;
         this.role = roles;
     }
-
-    // Getters e Setters omitidos para brevidade
     
     // Converte os papéis (roles) em GrantedAuthority
     @Override
@@ -89,5 +86,3 @@ public class Usuario implements UserDetails{
         return true;
     }
 }
-
- 

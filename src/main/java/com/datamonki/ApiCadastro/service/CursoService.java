@@ -37,13 +37,13 @@ public class CursoService {
 
 	private void verificarId(Integer id) {
 		if (!cursoRepository.existsById(id)) {
-			throw new IdNotFoundException("Não foi possivel encontrar curso com o Id '" + id + "', verifique e tente novamente"); 
+			throw new IdNotFoundException("Não há curso registrado com o id: " + id + ", verifique e tente novamente"); 
 		}
 	}
 
 	private void verificarNome(String nome) {
 		if (cursoRepository.findByNomeContainingIgnoreCase(nome).isEmpty()) {
-			throw new IdNotFoundException("Não foi possivel encontrar o curso com o nome de '" + nome + "', verifique e tente novamente"); 
+			throw new IdNotFoundException("Não há curso registrado com o nome: " + nome + ", verifique e tente novamente"); 
 		}
 	}
 

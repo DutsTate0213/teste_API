@@ -9,7 +9,7 @@ import com.datamonki.ApiCadastro.dto.GradeDto;
 import com.datamonki.ApiCadastro.response.ApiResponse;
 
 @RestController
-@RequestMapping("/api/grade")
+@RequestMapping("/grade")
 public class GradeController {
 
     @Autowired

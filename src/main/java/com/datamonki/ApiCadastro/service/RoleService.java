@@ -15,6 +15,7 @@ import com.datamonki.ApiCadastro.response.ApiResponse;
 
 @Service
 public class RoleService {
+	
 	@Autowired
 	private RoleRepository roleRepository;
 	
@@ -29,11 +30,13 @@ public class RoleService {
 		}else if(roleRepository.findByName(roleDto.name()).isPresent()) {
 			messages.add("Usuário  já cadastrado");
 		}	
+
 		if (!messages.isEmpty()) {
 			throw new ValidationException(messages);
 		}
 	}
 	
+
 	public ResponseEntity<ApiResponse> save(RoleDto roleDto){
 		verificarRole(roleDto);
 		Role role = new Role();
@@ -47,5 +50,4 @@ public class RoleService {
 		List<Role> roles = roleRepository.findAll();
 		return ResponseEntity.ok(new ApiResponse("Sucesso! Lista de roles cadastradas", roles));
 	}
-	
 }

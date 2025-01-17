@@ -17,14 +17,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	
-	private  JwtUtil jwtUtil;
-	private  CustomUserDetailService userDetailService;
+	private JwtUtil jwtUtil;
+	private CustomUserDetailService userDetailService;
 	
+
     public JwtAuthenticationFilter(JwtUtil jwtUtil, CustomUserDetailService userDetailsService) {
-	        this.jwtUtil = jwtUtil;
-	        this.userDetailService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+        this.userDetailService = userDetailsService;
 	}
-    
     
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -49,5 +49,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
         filterChain.doFilter(request, response);
     }
-
 }
