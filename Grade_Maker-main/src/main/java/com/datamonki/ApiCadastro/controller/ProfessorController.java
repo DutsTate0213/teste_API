@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.datamonki.ApiCadastro.dto.ProfessorDto;
 import com.datamonki.ApiCadastro.response.ApiResponse;
@@ -23,6 +24,7 @@ public class ProfessorController {
 	private ProfessorService professorService;
 	
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
 	public ResponseEntity<ApiResponse> create(@RequestBody ProfessorDto professorDto){
 		return professorService.create(professorDto);
 	}
@@ -43,16 +45,19 @@ public class ProfessorController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> delete(@PathVariable Integer id){
 		return professorService.deleteById(id);
 	}
 	
 	@DeleteMapping
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> delete(){
 		return professorService.deleteAll();
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN', 'ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody ProfessorDto professorDto){
 		return professorService.update(id, professorDto);
 	}

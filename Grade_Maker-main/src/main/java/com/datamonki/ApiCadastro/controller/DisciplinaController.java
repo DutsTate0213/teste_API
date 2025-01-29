@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.datamonki.ApiCadastro.dto.DisciplinaDto;
 import com.datamonki.ApiCadastro.response.ApiResponse;
@@ -23,6 +24,7 @@ public class DisciplinaController {
     private DisciplinaService disciplinaService;
     
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
     public ResponseEntity<ApiResponse> create(@RequestBody DisciplinaDto disciplinaDto){
         return disciplinaService.create(disciplinaDto);
     }
@@ -43,16 +45,19 @@ public class DisciplinaController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id){
         return disciplinaService.deleteById(id);
     }
     
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete(){
         return disciplinaService.deleteAll();
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN', 'ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody DisciplinaDto disciplinaDto){
         return disciplinaService.update(id, disciplinaDto);
     }

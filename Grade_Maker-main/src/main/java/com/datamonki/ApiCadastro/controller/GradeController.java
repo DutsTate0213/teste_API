@@ -3,6 +3,7 @@ package com.datamonki.ApiCadastro.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.datamonki.ApiCadastro.service.GradeService;
 import com.datamonki.ApiCadastro.dto.GradeDto;
@@ -16,6 +17,7 @@ public class GradeController {
     private GradeService gradeService;
     
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
     public ResponseEntity<ApiResponse> create(@RequestBody GradeDto gradeDto) {
         return gradeService.create(gradeDto);
     }
@@ -31,16 +33,19 @@ public class GradeController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         return gradeService.deleteById(id);
     }
     
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete() {
         return gradeService.deleteAll();
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN', 'ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody GradeDto gradeDto) {
         return gradeService.update(id, gradeDto);
     }

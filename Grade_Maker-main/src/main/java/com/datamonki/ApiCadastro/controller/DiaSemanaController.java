@@ -14,7 +14,7 @@ import com.datamonki.ApiCadastro.service.DiaSemanaService;
 import com.datamonki.ApiCadastro.dto.DiaSemanaDto;
 
 @RestController
-@RequestMapping("/dia_semana")
+@RequestMapping("/dia-semana")
 public class DiaSemanaController {
     
     @Autowired

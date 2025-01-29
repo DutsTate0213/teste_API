@@ -1,86 +1,47 @@
+import Api from "./Api";
+
 export const getDisciplina = async () => {
-    try {
-      const resposta = await fetch("http://localhost:8080/api/disciplina");
-      if (!resposta.ok) {
-        throw new Error(`HTTP error! status: ${resposta.status}`);
-      }
-      const dadosJson = await resposta.json();
-      if (Array.isArray(dadosJson)) {
-        return dadosJson;
-      } else if (typeof dadosJson === "object" && dadosJson !== null) {
-        const arrayDisciplinas = Object.values(dadosJson).find(Array.isArray);
-        if (arrayDisciplinas) {
-          return arrayDisciplinas;
-        } else {
-          throw new Error(
-            "Não foi possível encontrar um array de disciplinas nos dados"
-          );
-        }
-      } else {
-        throw new Error("Formato de dados inesperado");
-      }
-    } catch (erro) {
-      console.error("Erro ao buscar as disciplinas:", erro);
-    }
-  };
-  
-
-export const postDisciplina = async (objectDisciplina) => {
   try {
-    const resposta = await fetch("http://localhost:8080/api/disciplina", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(objectDisciplina),
-    });
-
-    if (!resposta.ok) {
-      throw new Error(`HTTP error! status: ${resposta.status}`);
+    const resposta = await Api.get("/disciplina");
+    if (resposta.data && Array.isArray(resposta.data)) {
+      return resposta.data;
+    } else {
+      throw new Error("Formato de dados inesperado");
     }
-
-    const dadosJson = await resposta.json();
-    return dadosJson;
   } catch (erro) {
-    console.error("Erro ao inserir o Disciplina", erro);
-    setErro(erro.message);
+    console.error("Erro ao buscar as disciplinas:", erro.message);
+    throw erro;
+  }
+};
+
+export const insertDisciplina = async (objectDisciplina) => {
+  try {
+    const resposta = await Api.post("/disciplina", objectDisciplina);
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao inserir disciplina:", erro);
+    throw erro;
   }
 };
 
 export const updateDisciplina = async (id, objectDisciplina) => {
   try {
-    const resposta = await fetch(`http://localhost:8080/api/disciplina/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(objectDisciplina),
-    });
-    if (!resposta.ok) {
-      throw new Error(`HTTP error! status: ${resposta.status}`);
-    }
-    const dadosJson = await resposta.json();
-    return dadosJson;
+    const resposta = await Api.put(`/disciplina/${id}`, objectDisciplina);
+    return resposta;
   } catch (erro) {
-    console.error("Erro ao atualizar disciplina: ", erro);
+    console.error("Erro ao atualizar disciplina:", erro);
+    throw erro;
   }
 };
 
-
 export const deleteDisciplina = async (id) => {
-    try {
-        const resposta = await fetch(`http://localhost:8080/api/disciplina/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!resposta.ok) {
-          throw new Error("HTTP error! status: ", resposta.status);
-        }
-        const dadosJson = await resposta.json();
-        return dadosJson;
-      } catch (erro) {
-        console.error("Erro ao excluir  disciplina");
-      }
+  try {
+    const resposta = await Api.delete(`/disciplina/${id}`);
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao excluir disciplina:", erro);
+    throw erro;
+  }
 };
+
+getProfessorDisciplina()

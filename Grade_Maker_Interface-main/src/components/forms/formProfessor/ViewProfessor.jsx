@@ -94,6 +94,9 @@ const ViewProfessor = ({ isOpen, onClose, professor }) => {
 
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>
+            Editar Disponibilidade
+          </Button>
+          <Button colorScheme="blue" ml={3} onClick={onClose}>
             Fechar
           </Button>
         </ModalFooter>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.datamonki.ApiCadastro.dto.DisponibilidadeDto;
 import com.datamonki.ApiCadastro.response.ApiResponse;
@@ -26,12 +27,14 @@ public class DisponibilidadeController {
 	
 	//Faz a requisicao para criar uma disponibilidade
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
 	public ResponseEntity<ApiResponse> save(@RequestBody DisponibilidadeDto disponibilidadeDto) {
 		return disponibilidadeService.save(disponibilidadeDto);
 	}
 	
 	//Faz a requisicao para criar uma disponibilidade
 	@PostMapping("/lista")
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
 	public ResponseEntity<ApiResponse> saveAll(@RequestBody List<DisponibilidadeDto> disponibilidadesDto) {
 		return disponibilidadeService.saveAll(disponibilidadesDto);
 	}
@@ -48,11 +51,13 @@ public class DisponibilidadeController {
 	}
 	
 	@DeleteMapping("/professor/{idProfessor}")	
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> deleteByIdProfessor(@PathVariable Integer idProfessor) {
 		return disponibilidadeService.deleteByIdProfessor(idProfessor);
 	}
 	
 	@DeleteMapping("/professor")	
+	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
 	public ResponseEntity<ApiResponse> deleteByIdProfessorAnoSemestre(
 			@RequestParam("idProfessor") Integer idProfessor,
 			@RequestParam("ano") Integer ano, 

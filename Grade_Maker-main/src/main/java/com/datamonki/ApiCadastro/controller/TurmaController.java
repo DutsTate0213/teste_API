@@ -3,6 +3,7 @@ package com.datamonki.ApiCadastro.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.datamonki.ApiCadastro.service.TurmaService;
 import com.datamonki.ApiCadastro.dto.TurmaDto;
@@ -16,6 +17,7 @@ public class TurmaController {
     private TurmaService turmaService;
     
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN')")
     public ResponseEntity<ApiResponse> create(@RequestBody TurmaDto turmaDto) {
         return turmaService.create(turmaDto);
     }
@@ -31,16 +33,19 @@ public class TurmaController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
         return turmaService.deleteById(id);
     }
     
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete() {
         return turmaService.deleteAll();
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN', 'ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody TurmaDto turmaDto) {
         return turmaService.update(id, turmaDto);
     }

@@ -32,16 +32,6 @@ const FormDisciplina = () => {
             />
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Carga Horária</FormLabel>
-            <Input
-              type="number"
-              value={cargaHoraria}
-              onChange={(e) => setCargaHoraria(e.target.value)}
-              placeholder="Carga horária"
-            />
-          </FormControl>
-
           <Button type="submit" colorScheme="purple" width="full">
             Salvar
           </Button>

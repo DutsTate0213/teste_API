@@ -1,6 +1,5 @@
 import Api from "./Api";
 
-//get de Professor
 export const getProfessor = async () => {
   try {
     const resposta = await Api.get("/professor");
@@ -18,8 +17,6 @@ export const getProfessor = async () => {
   }
 };
 
-
-//get de Professor
 export const getProfessorDisciplina = async () => {
   try {
     const resposta = await fetch("http://localhost:8080/api/professor_diciplina");
@@ -48,15 +45,7 @@ export const getProfessorDisciplina = async () => {
   }
 };
 
-
-
-
-
-
-
-
-//insert de Professor ====
-export const postProfessor = async (objectProfessor) => {
+export const insertProfessor = async (objectProfessor) => {
   try {
     const resposta = await fetch("http://localhost:8080/api/professor", {
       method: "POST",
@@ -98,21 +87,19 @@ export const updateProfessor = async (id, objectProfessor) => {
 };
 
 export const deleteProfessor = async (id) =>{
-    try {
-        const resposta = await fetch(`http://localhost:8080/api/professor/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!resposta.ok) {
-          throw new Error("HTTP error! status: ", resposta.status);
-        }
-        const dadosJson = await resposta.json();
-        return dadosJson;
-      } catch (erro) {
-        console.error("Erro ao excluir  professor");
+  try {
+      const resposta = await fetch(`http://localhost:8080/api/professor/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!resposta.ok) {
+        throw new Error("HTTP error! status: ", resposta.status);
       }
-
+      const dadosJson = await resposta.json();
+      return dadosJson;
+    } catch (erro) {
+      console.error("Erro ao excluir  professor");
+  }
 }
-

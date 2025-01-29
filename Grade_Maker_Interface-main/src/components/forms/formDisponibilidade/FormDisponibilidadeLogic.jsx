@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
+import { getDiaSemana } from "../../../service/DiaSemanaService";
+import { getDisciplina } from "../../../service/DisciplinaService";
+import { getTurno } from "../../../service/TurnoService";
+import { getCurso } from "../../../service/CursoService";
 import {
   deleteteByIdProfessorAnoSemestre,
   getDispProf,
@@ -75,12 +79,20 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
         // Atualizar as disciplinas selecionadas
         setSelecionadas(disciplinasUnicas);
       } catch (error) {
-        console.log("Erro inesperado: " + error);
+        console.error("Erro ao buscar disponibilidade:", error);
+        toast({
+          title: "Erro",
+          description: "Falha ao buscar disponibilidade do professor.",
+          status: "error",
+          duration: 4000,
+          position: "top-right",
+          isClosable: true,
+        });
       }
     };
   
     fetchDisponibilidade();
-  }, [selectedProfessor, anoInput, semestreInput]);
+  }, [selectedProfessor, anoInput, semestreInput, toast]);
   
 
   // Atualiza a lista de disciplinas disponíveis ao selecionar um curso
@@ -199,8 +211,6 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
         });
       });
 
-      console.log('Payload a ser enviado:', payload); // Debug
-
       // Deleta registros existentes antes de inserir novos
       await deleteteByIdProfessorAnoSemestre(selectedProfessor?.id, anoInput, semestreInput);
       await insertListaDisponibilidade(payload);
@@ -214,7 +224,7 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
         isClosable: true,
       });
     } catch (error) {
-      console.error('Erro ao salvar disponibilidade:', error); // Debug
+      console.error('Erro ao salvar disponibilidade:', error);
       toast({
         title: "Erro",
         description: "Falha ao salvar disponibilidade.",
