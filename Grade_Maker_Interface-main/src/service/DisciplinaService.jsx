@@ -44,4 +44,12 @@ export const deleteDisciplina = async (id) => {
   }
 };
 
-getProfessorDisciplina()
+export const getProfessorDisciplina = async (id) => {
+  try {
+    const resposta = await Api.get(`/professor-disciplina/${id}`);
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao buscar professor disciplina:", erro);
+    throw erro;
+  }
+};

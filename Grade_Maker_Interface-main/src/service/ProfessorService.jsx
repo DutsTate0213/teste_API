@@ -16,6 +16,22 @@ export const getProfessor = async () => {
     throw erro; // Repropaga o erro para ser tratado em outro lugar
   }
 };
+export const getProfessorOrderByNome = async () => {
+  try {
+    const resposta = await Api.get("/professor/nome/order");
+    //console.log(resposta);
+
+    // Verifica se os dados estão no formato esperado
+    if (resposta.data && Array.isArray(resposta.data)) {
+      return resposta.data; // Retorna o array de professores diretamente
+    } else {
+      throw new Error("Formato de dados inesperado");
+    }
+  } catch (erro) {
+    console.error("Erro ao buscar os professores:", erro.message);
+    throw erro; // Repropaga o erro para ser tratado em outro lugar
+  }
+};
 
 export const getProfessorDisciplina = async () => {
   try {
@@ -47,23 +63,11 @@ export const getProfessorDisciplina = async () => {
 
 export const insertProfessor = async (objectProfessor) => {
   try {
-    const resposta = await fetch("http://localhost:8080/api/professor", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(objectProfessor),
-    });
-
-    if (!resposta.ok) {
-      throw new Error(`HTTP error! status: ${resposta.status}`);
-    }
-
-    const dadosJson = await resposta.json();
-    return dadosJson;
+    const resposta = await Api.post("/professor", objectProfessor);
+    return resposta.data;
   } catch (erro) {
-    console.error("Erro ao inserir  professor", erro);
-    setErro(erro.message);
+    console.error("Erro ao inserir professor:", erro);
+    throw erro; // Propaga o erro para ser tratado no componente
   }
 };
 
@@ -103,3 +107,17 @@ export const deleteProfessor = async (id) =>{
       console.error("Erro ao excluir  professor");
   }
 }
+
+export const getProfessorById = async (id) => {
+  try {
+    const resposta = await Api.get(`/professor/${id}`);
+    if (resposta.data) {
+      return resposta.data;
+    } else {
+      throw new Error("Formato de dados inesperado");
+    }
+  } catch (erro) {
+    console.error("Erro ao buscar professor:", erro.message);
+    throw erro;
+  }
+};

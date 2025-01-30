@@ -44,6 +44,7 @@ const FormDisponibilidade = ({ ano, days = [], turnos = [], professores = [], cu
     moverPrimeiroSelecionado,
     moverTodosParaSelecionadas,
     moverTodosParaDisponiveis,
+    handleAnoChange,
   } = useFormDisponibilidadeLogic(ano, professores, cursos, days, turnos);
 
   // Ordena os arrays de dias e turnos pelo ID
@@ -98,7 +99,7 @@ const FormDisponibilidade = ({ ano, days = [], turnos = [], professores = [], cu
             </Select>
           </Box>
           <Box>
-            <Text mb={2} fontSize={18}>Ano</Text>
+            <Text mb={2}>Ano</Text>
             <Input
               _focus={{
                 borderColor: "purple",

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../styles/global.css";
 import { Heading, Box, Flex, Text, Circle, Button } from "@chakra-ui/react";
-import { getProfessor, getProfessorDisciplina } from "../service/ProfessorService";
+import { getProfessor, getProfessorDisciplina, getProfessorOrderByNome } from "../service/ProfessorService";
 import FormProfessor from "../components/forms/formProfessor/FormProfessor"; // Certifique-se de importar o FormProfessor 
 import ViewProfessor from "../components/forms/formProfessor/ViewProfessor";
+
 const Professor = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -31,7 +32,7 @@ const Professor = () => {
   useEffect(() => {
     const fetchProfessores = async () => {
       try {
-        const response = await getProfessor();
+        const response = await getProfessorOrderByNome();
         console.log(response)
         setProfessores(response);
       } catch (error) {
@@ -143,8 +144,12 @@ const Professor = () => {
           </Flex>
         </Flex>
 
-        {/* Modal FormProfessor */}
-        <ViewProfessor isOpen={isModalOpen} onClose={closeView} professor={selectedProfessor} />
+        {/* Modal ViewProfessor */}
+        <ViewProfessor 
+          isOpen={isModalOpen} 
+          onClose={closeView} 
+          professor={selectedProfessor} 
+        />
         <FormProfessor isOpen={isFormOpen} onClose={closeForm} />
       </div>
     </div>

@@ -46,6 +46,11 @@ public class ProfessorService {
             throw new IdNotFoundException("Não foi possivel encontrar o professor com o nome de '" + nome + "', verifique e tente novamente"); 
         }
     }
+
+    public ResponseEntity<ApiResponse> getByOrderNome(){
+        List<Professor> professores = professorRepository.findByOrderByNomeAsc();
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Professores ordenados por nome", professores));
+    }
     
     
     @Transactional

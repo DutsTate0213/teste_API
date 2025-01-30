@@ -1,3 +1,5 @@
+import Api from "./Api";
+
 export const getDisponibilidadeProfessor = async (id) => {
   try {
     const resposta = await Api.get(`/disponibilidade/professor/${id}`);
@@ -8,6 +10,7 @@ export const getDisponibilidadeProfessor = async (id) => {
     }
   } catch (erro) {
     console.error("Erro ao buscar Disponibilidade", erro);
+    throw erro;
   }
 };
 
@@ -17,16 +20,17 @@ export const deleteByIdProfessor = async (id) => {
     return true;
   } catch (erro) {
     console.error("Erro ao deletar disponibilidade", erro);
+    throw erro;
   }
 };
 
 export const insertListaDisponibilidade = async (payload) => {
   try {
     const resposta = await Api.post("/disponibilidade/lista", payload);
-  
     return resposta;
   } catch (erro) {
     console.error("Erro ao inserir as disponibilidades", erro);
+    throw erro;
   }
 };
 
@@ -43,8 +47,9 @@ export const deleteByIdProfessorAnoSemestre = async (
     });
     const url = `/disponibilidade/professor?${queryParams.toString()}`;
     const resposta = await Api.delete(url);
-    return await resposta;
+    return resposta;
   } catch (error) {
-    console.log("Erro ao deletar disponibilidade: \n" + error);
+    console.error("Erro ao deletar disponibilidade:", error);
+    throw error;
   }
 };

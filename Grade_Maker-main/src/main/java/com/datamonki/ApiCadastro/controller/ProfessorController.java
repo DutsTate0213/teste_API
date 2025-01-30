@@ -43,6 +43,11 @@ public class ProfessorController {
 	public ResponseEntity<ApiResponse> getByNome(@PathVariable String nome) {
 		return professorService.getByNome(nome);
 	}
+
+	@GetMapping("/nome/order")
+	public ResponseEntity<ApiResponse> getByOrderNome(){
+		return professorService.getByOrderNome();
+	}
 	
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")

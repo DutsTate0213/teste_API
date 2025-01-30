@@ -5,8 +5,8 @@ import { getDisciplina } from "../../../service/DisciplinaService";
 import { getTurno } from "../../../service/TurnoService";
 import { getCurso } from "../../../service/CursoService";
 import {
-  deleteteByIdProfessorAnoSemestre,
-  getDispProf,
+  deleteByIdProfessorAnoSemestre,
+  getDisponibilidadeProfessor,
   insertListaDisponibilidade,
 } from "../../../service/DisponibilidadeService";
 
@@ -41,12 +41,12 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
       try {
         if (!selectedProfessor || !anoInput || !semestreInput) return;
   
-        const resultado = await getDispProf(selectedProfessor.id);
+        const resultado = await getDisponibilidadeProfessor(selectedProfessor.id);
   
         // Filtrar disponibilidades por ano e semestre
         const disponibilidadesFiltradas = resultado.filter(
           (disp) =>
-            disp.ano === parseInt(anoInput) &&
+            disp.ano === parseInt(anoInput.year()) &&
             disp.semestre === parseInt(semestreInput)
         );
   
@@ -167,6 +167,14 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
     }));
   };
 
+  const handleAnoChange = (newValue) => {
+    setAnoInput(newValue);
+    // Limpa as seleções quando o ano muda
+    setDisponiveis([]);
+    setSelecionadas([]);
+    setSelectedCurso(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedProfessor || !semestreInput || !anoInput || selecionadas.length === 0) {
@@ -183,6 +191,7 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
 
     try {
       const payload = [];
+      const anoValue = anoInput.year();
       
       // Itera sobre as disciplinas selecionadas
       selecionadas.forEach((disciplina) => {
@@ -203,16 +212,17 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
                   idTurno: parseInt(idTurno),
                   idDiaSemana: parseInt(idDiaSemana),
                   semestre: parseInt(semestreInput),
-                  ano: parseInt(anoInput),
+                  ano: anoValue,
                 });
               }
             });
           }
         });
+
       });
 
       // Deleta registros existentes antes de inserir novos
-      await deleteteByIdProfessorAnoSemestre(selectedProfessor?.id, anoInput, semestreInput);
+      await deleteByIdProfessorAnoSemestre(selectedProfessor?.id, anoValue, semestreInput);
       await insertListaDisponibilidade(payload);
       
       toast({
@@ -280,6 +290,7 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
     moverPrimeiroSelecionado,
     moverTodosParaSelecionadas,
     moverTodosParaDisponiveis,
+    handleAnoChange,
   };
 };
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
-import { postCurso } from "../../../service/CursoService";
+import { insertCurso, getCurso, updateCurso, deleteCurso } from "../../../service/CursoService";
 
 const useFormCursoLogic = () => {
   const toast = useToast();
@@ -16,7 +16,7 @@ const useFormCursoLogic = () => {
         turno,
       };
 
-      await postCurso(cursoData);
+      await insertCurso(cursoData);
       
       toast({
         title: "Sucesso",

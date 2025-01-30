@@ -1,130 +1,51 @@
+import useFormProfessorLogic from "./FormProfessorLogic";
 import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
+  ModalFooter,
   ModalCloseButton,
   Button,
+  Input,
   Text,
-  Select,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Box,
-  Flex,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
-import useFormProfessorLogic from "./FormProfessorLogic";
 
-const FormProfessor = ({ isOpen, onClose, professor }) => {
-  const {
-    disponibilidades,
-    anoSelecionado,
-    setAnoSelecionado,
-    semestreSelecionado,
-    setSemestreSelecionado
-  } = useFormProfessorLogic(professor);
-
-  // Obtém disciplinas únicas
-  const disciplinasUnicas = [...new Set(disponibilidades.map(d => d.disciplina.nome))];
-
-  // Agrupa disponibilidades por dia da semana
-  const disponibilidadesPorDia = disponibilidades.reduce((acc, disp) => {
-    const key = `${disp.diaSemana.descricao}-${disp.turno.descricao}`;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(disp.disciplina.nome);
-    return acc;
-  }, {});
+const FormProfessor = ({ isOpen, onClose }) => {
+  const { professor, setProfessor, handleSubmitProfessor, handleCancelar } = useFormProfessorLogic(onClose);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
-      <ModalContent maxW="550px">
-        <ModalHeader>{professor ? professor.nome : "Professor"}</ModalHeader>
+      <ModalContent>
+        <ModalHeader>
+          <Text>Cadastro de Professor</Text>
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex gap={4} mb={4}>
-            <Box>
-              <Text mb={2}>Ano</Text>
-              <Select
-                value={anoSelecionado}
-                onChange={(e) => setAnoSelecionado(e.target.value)}
-              >
-                <option value={2023}>2023</option>
-                <option value={2024}>2024</option>
-                <option value={2025}>2025</option>
-              </Select>
-            </Box>
-            <Box>
-              <Text mb={2}>Semestre</Text>
-              <Select
-                value={semestreSelecionado}
-                onChange={(e) => setSemestreSelecionado(e.target.value)}
-              >
-                <option value={1}>Primeiro</option>
-                <option value={2}>Segundo</option>
-              </Select>
-            </Box>
-          </Flex>
-
-          {disponibilidades.length > 0 ? (
-            <Flex gap={6} direction="column">
-              {/* Tabela de Disciplinas */}
-              <Box>
-                <Text fontSize="lg" fontWeight="bold" mb={2}>
-                  Disciplinas Cadastradas
-                </Text>
-                <Table variant="simple" size="sm">
-                  <Thead>
-                    <Tr>
-                      <Th>Disciplina</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {disciplinasUnicas.map((disciplina) => (
-                      <Tr key={disciplina}>
-                        <Td>{disciplina}</Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </Box>
-
-              {/* Tabela de Disponibilidade */}
-              <Box>
-                <Text fontSize="lg" fontWeight="bold" mb={2}>
-                  Disponibilidade
-                </Text>
-                <Table variant="simple" size="sm">
-                  <Thead>
-                    <Tr>
-                      <Th>Dia - Turno</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {Object.entries(disponibilidadesPorDia).map(([horario]) => (
-                      <Tr key={horario}>
-                        <Text fontWeight="medium" ml={5} mb={1}>{horario}</Text>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </Box>
-            </Flex>
-          ) : (
-            <Text>Nenhuma disponibilidade cadastrada para este período.</Text>
-          )}
+          <FormControl>
+            <FormLabel>Nome do Professor</FormLabel>
+            <Input
+              type="text"
+              name="nome"
+              value={professor.nome || ''}
+              onChange={(e) => setProfessor({ ...professor, nome: e.target.value })}
+              placeholder="Digite o nome do professor"
+            />
+          </FormControl>
         </ModalBody>
-
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Fechar
+          <Button colorScheme="purple" mr={3} onClick={handleSubmitProfessor}> 
+            Salvar
+          </Button>
+          <Button variant="ghost" onClick={() => {
+            handleCancelar();
+            onClose();
+          }}>
+            Cancelar
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -133,4 +54,3 @@ const FormProfessor = ({ isOpen, onClose, professor }) => {
 };
 
 export default FormProfessor;
-  

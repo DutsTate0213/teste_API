@@ -8,17 +8,15 @@ import {
   Text,
   Divider,
   useToast,
+  Button,
 } from "@chakra-ui/react";
-import {
-  getDiaSemana,
-  getTurnos,
-  updateDiaSemanaStatus,
-  updateTurnoStatus,
-} from "../service/ConfiguracaoService";
+import { getDiaSemana, updateDiaSemana } from "../service/DiaSemanaService";
+import { getTurno, updateTurno } from "../service/TurnoService";
 
 const Configuracao = () => {
   const [diasSemana, setDiasSemana] = useState([]);
   const [turnos, setTurnos] = useState([]);
+  const [pendingChanges, setPendingChanges] = useState({ dias: {}, turnos: {} });
   const toast = useToast();
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const Configuracao = () => {
     try {
       const [diasResponse, turnosResponse] = await Promise.all([
         getDiaSemana(),
-        getTurnos(),
+        getTurno(),
       ]);
       setDiasSemana(diasResponse.data || []);
       setTurnos(turnosResponse.data || []);
@@ -38,30 +36,53 @@ const Configuracao = () => {
     }
   };
 
-  const handleDiaSemanaToggle = async (id, currentStatus) => {
+  const handleDiaSemanaToggle = (id, currentStatus) => {
+    const newStatus = currentStatus === 1 ? 0 : 1;
+    setDiasSemana(diasSemana.map(dia => 
+      dia.id === id ? { ...dia, ativo: newStatus } : dia
+    ));
+    setPendingChanges(prev => ({
+      ...prev,
+      dias: { ...prev.dias, [id]: newStatus }
+    }));
+  };
+
+  const handleTurnoToggle = (id, currentStatus) => {
+    const newStatus = currentStatus === 1 ? 0 : 1;
+    setTurnos(turnos.map(turno => 
+      turno.id === id ? { ...turno, ativo: newStatus } : turno
+    ));
+    setPendingChanges(prev => ({
+      ...prev,
+      turnos: { ...prev.turnos, [id]: newStatus }
+    }));
+  };
+
+  const handleSubmit = async () => {
     try {
-      const newStatus = currentStatus === 1 ? 0 : 1;
-      await updateDiaSemanaStatus(id, newStatus);
-      setDiasSemana(diasSemana.map(dia => 
-        dia.id === id ? { ...dia, ativo: newStatus } : dia
-      ));
-      showToast("Status atualizado com sucesso", "success");
+      const updates = [];
+      
+      // Process dia semana updates
+      for (const [id, ativo] of Object.entries(pendingChanges.dias)) {
+        updates.push(updateDiaSemana(id, { ativo }));
+      }
+      
+      // Process turno updates
+      for (const [id, ativo] of Object.entries(pendingChanges.turnos)) {
+        updates.push(updateTurno(id, { ativo }));
+      }
+      
+      await Promise.all(updates);
+      setPendingChanges({ dias: {}, turnos: {} });
+      showToast("Configurações atualizadas com sucesso", "success");
     } catch (error) {
-      showToast("Erro ao atualizar status", "error");
+      showToast("Erro ao salvar as configurações", "error");
     }
   };
 
-  const handleTurnoToggle = async (id, currentStatus) => {
-    try {
-      const newStatus = currentStatus === 1 ? 0 : 1;
-      await updateTurnoStatus(id, newStatus);
-      setTurnos(turnos.map(turno => 
-        turno.id === id ? { ...turno, ativo: newStatus } : turno
-      ));
-      showToast("Status atualizado com sucesso", "success");
-    } catch (error) {
-      showToast("Erro ao atualizar status", "error");
-    }
+  const hasPendingChanges = () => {
+    return Object.keys(pendingChanges.dias).length > 0 || 
+           Object.keys(pendingChanges.turnos).length > 0;
   };
 
   const showToast = (message, status) => {
@@ -111,6 +132,15 @@ const Configuracao = () => {
             ))}
           </VStack>
         </Box>
+
+        <Button
+          colorScheme="purple"
+          isDisabled={!hasPendingChanges()}
+          onClick={handleSubmit}
+          mt={4}
+        >
+          Salvar Alterações
+        </Button>
       </VStack>
     </Box>
   );

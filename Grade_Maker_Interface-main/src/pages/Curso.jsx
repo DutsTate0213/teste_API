@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import FormCurso from "../components/forms/formCurso/FormCurso"; 
-import TableCurso from "../components/tables/TableCurso";
 import "../styles/global.css";
 import { Heading } from "@chakra-ui/react";
 import { getCurso } from "../service/CursoService";

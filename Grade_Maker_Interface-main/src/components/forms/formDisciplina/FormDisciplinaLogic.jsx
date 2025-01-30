@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
-import { postDisciplina } from "../../../service/DisciplinaService";
+import { insertDisciplina, getDisciplina, updateDisciplina, deleteDisciplina } from "../../../service/DisciplinaService"; 
 
 const useFormDisciplinaLogic = () => {
   const toast = useToast();
@@ -16,7 +16,7 @@ const useFormDisciplinaLogic = () => {
         cargaHoraria: parseInt(cargaHoraria),
       };
 
-      await postDisciplina(disciplinaData);
+      await insertDisciplina(disciplinaData);
       
       toast({
         title: "Sucesso",

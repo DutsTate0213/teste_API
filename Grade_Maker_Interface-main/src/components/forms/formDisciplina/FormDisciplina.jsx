@@ -6,7 +6,6 @@ import {
   FormLabel,
   Input,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import useFormDisciplinaLogic from "./FormDisciplinaLogic";
 
@@ -14,8 +13,6 @@ const FormDisciplina = () => {
   const {
     nome,
     setNome,
-    cargaHoraria,
-    setCargaHoraria,
     handleSubmit,
   } = useFormDisciplinaLogic();
 

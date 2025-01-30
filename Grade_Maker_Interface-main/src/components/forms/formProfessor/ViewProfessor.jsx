@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -8,6 +9,7 @@ import {
   ModalCloseButton,
   Button,
   Text,
+  Select,
   Table,
   Thead,
   Tbody,
@@ -16,92 +18,99 @@ import {
   Td,
   Box,
   Flex,
-  Select,
 } from "@chakra-ui/react";
-import useViewProfessorLogic from "./FormProfessorLogic";
-
+import useViewProfessorLogic from "./ViewProfessorLogic";
 
 const ViewProfessor = ({ isOpen, onClose, professor }) => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  
   const {
     disponibilidades,
     anoSelecionado,
     setAnoSelecionado,
     semestreSelecionado,
     setSemestreSelecionado,
-    disciplinasUnicas,
     diasSemana,
     turnos,
+    anosDisponiveis,
+    cursos,
+    professores,
   } = useViewProfessorLogic(professor);
 
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Disponibilidade do Professor: {professor?.nome}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex gap={4} mb={4}>
-            <Select
-              value={anoSelecionado}
-              onChange={(e) => setAnoSelecionado(e.target.value)}
-            >
-              <option value={new Date().getFullYear()}>
-                {new Date().getFullYear()}
-              </option>
-              <option value={new Date().getFullYear() + 1}>
-                {new Date().getFullYear() + 1}
-              </option>
-            </Select>
-            <Select
-              value={semestreSelecionado}
-              onChange={(e) => setSemestreSelecionado(e.target.value)}
-            >
-              <option value={1}>1º Semestre</option>
-              <option value={2}>2º Semestre</option>
-            </Select>
-          </Flex>
+  const handleFormClose = () => {
+    setIsFormOpen(false);
+    // Atualizar os dados após fechar o formulário
+    // Isso será implementado no ViewProfessorLogic
+  };
 
-          {disponibilidades.length > 0 ? (
-            <Flex gap={6} direction="column">
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{professor?.nome}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex gap={4} mb={4}>
+              <Select
+                value={anoSelecionado}
+                onChange={(e) => setAnoSelecionado(Number(e.target.value))}
+              >
+                {anosDisponiveis.map((ano) => (
+                  <option key={ano} value={ano}>
+                    {ano}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                value={semestreSelecionado}
+                onChange={(e) => setSemestreSelecionado(Number(e.target.value))}
+              >
+                <option value={1}>1º Semestre</option>
+                <option value={2}>2º Semestre</option>
+              </Select>
+            </Flex>
+
+            {disponibilidades.length > 0 ? (
               <Box>
-                <Text fontSize="lg" fontWeight="bold" mb={2}>
-                  Disciplinas Cadastradas
+                <Text fontSize="lg" fontWeight="bold" mb={4}>
+                  Disponibilidades
                 </Text>
-                <Table variant="simple" size="sm">
+                <Table variant="simple">
                   <Thead>
                     <Tr>
-                      <Th>Disciplina</Th>
                       <Th>Dia</Th>
                       <Th>Turno</Th>
+                      <Th>Disciplina</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
                     {disponibilidades.map((disp, index) => (
                       <Tr key={index}>
+                        <Td>{disp.diaSemana.descricao}</Td>
+                        <Td>{disp.turno.descricao}</Td>
                         <Td>{disp.disciplina.nome}</Td>
-                        <Td>{disp.diaSemana.nome}</Td>
-                        <Td>{disp.turno.nome}</Td>
                       </Tr>
                     ))}
                   </Tbody>
                 </Table>
               </Box>
-            </Flex>
-          ) : (
-            <Text>Nenhuma disponibilidade cadastrada para este período.</Text>
-          )}
-        </ModalBody>
+            ) : (
+              <Text>Nenhuma disponibilidade cadastrada para este período.</Text>
+            )}
+          </ModalBody>
 
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Editar Disponibilidade
-          </Button>
-          <Button colorScheme="blue" ml={3} onClick={onClose}>
-            Fechar
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose} mr="auto">
+              Fechar
+            </Button>
+            <Button colorScheme="purple" onClick={(onClose)} ml="auto">
+              Editar Disponibilidade
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

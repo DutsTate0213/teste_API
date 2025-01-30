@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import FormDisc from "../components/forms/formDisciplina/FormDisciplina";
-import TableDisc from "../components/tables/TableDisc";
 import "../styles/global.css";
 import { Heading } from "@chakra-ui/react";
 import { getDisciplina } from "../service/DisciplinaService";

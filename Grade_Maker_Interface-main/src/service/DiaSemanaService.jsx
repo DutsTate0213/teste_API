@@ -3,11 +3,7 @@ import Api from "./Api";
 export const getDiaSemana = async () => {
   try {
     const resposta = await Api.get("/dia-semana");
-    if (resposta.data && Array.isArray(resposta.data)) {
-      return resposta.data;
-    } else {
-      throw new Error("Formato de dados inesperado");
-    }
+    return resposta;
   } catch (erro) {
     console.error("Erro ao buscar os dias da semana:", erro.message);
     throw erro;

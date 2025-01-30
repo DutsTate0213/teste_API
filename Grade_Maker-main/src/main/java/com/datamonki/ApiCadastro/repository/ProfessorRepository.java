@@ -16,4 +16,7 @@ public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
 
     // Busca um professor pelo nome ignorando o case(nao diferencia maiusculo de minusculo)
     List<Professor> findByNomeContainingIgnoreCase(String nome);
+
+    // Buscar professor ordenado por nome
+    List<Professor> findByOrderByNomeAsc();
 }
