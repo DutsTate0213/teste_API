@@ -1,26 +1,38 @@
-import { Center, Heading } from '@chakra-ui/react'
-import Api from '../service/Api'
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Heading } from '@chakra-ui/react'
+import { getTurma } from "../service/TurmaService";
+
 
 
 function Turma(){
 
   useEffect(() => {
-    const fetchDias = async () => {
-      try {
-            console.log("teste")
-            const resultado = await Api.get('/dia_semana')
-            console.log(resultado)
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        fetchDias();
+
       }, []);
       return (
-        <Center flexDirection="column">
-            <Heading as="h1" className="page-title">Home</Heading>
-        </Center>
+          <div className="page-container">
+          <div className="content-wrapper">
+              <Heading
+                className="page-title"
+                as="h2"
+                fontSize="4xl"
+                position="relative"
+                textAlign="center"
+                _after={{
+                  content: '""',
+                  display: "block",
+                  width: "100%",
+                  height: "7px",
+                  backgroundColor: "purple.500",
+                  position: "absolute",
+                  bottom: "-5px",
+                  left: 0,
+                }}
+              >
+                Turma
+              </Heading>
+          </div>
+      </div>
     )
 }
 

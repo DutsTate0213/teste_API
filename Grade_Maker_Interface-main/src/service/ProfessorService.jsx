@@ -3,33 +3,86 @@ import Api from "./Api";
 export const getProfessor = async () => {
   try {
     const resposta = await Api.get("/professor");
-    //console.log(resposta);
-
-    // Verifica se os dados estão no formato esperado
     if (resposta.data && Array.isArray(resposta.data)) {
-      return resposta.data; // Retorna o array de professores diretamente
+      return resposta.data;
     } else {
       throw new Error("Formato de dados inesperado");
     }
   } catch (erro) {
     console.error("Erro ao buscar os professores:", erro.message);
-    throw erro; // Repropaga o erro para ser tratado em outro lugar
+    throw erro;
   }
 };
+
+export const getProfessorById = async (id) => {
+  try {
+    const resposta = await Api.get(`/professor/${id}`);
+    if (resposta.data) {
+      return resposta.data;
+    } else {
+      throw new Error("Formato de dados inesperado");
+    }
+  } catch (erro) {
+    console.error("Erro ao buscar professor:", erro.message);
+    throw erro;
+  }
+};
+
 export const getProfessorOrderByNome = async () => {
   try {
     const resposta = await Api.get("/professor/nome/order");
-    //console.log(resposta);
-
-    // Verifica se os dados estão no formato esperado
     if (resposta.data && Array.isArray(resposta.data)) {
-      return resposta.data; // Retorna o array de professores diretamente
+      return resposta.data;
     } else {
       throw new Error("Formato de dados inesperado");
     }
   } catch (erro) {
     console.error("Erro ao buscar os professores:", erro.message);
-    throw erro; // Repropaga o erro para ser tratado em outro lugar
+    throw erro;
+  }
+};
+
+export const getProfessorByNome = async (nome) => {
+  try {
+    const resposta = await Api.get(`/professor/nome/${nome}`);
+    if (resposta.data) {
+      return resposta.data;
+    } else {
+      throw new Error("Formato de dados inesperado");
+    }
+  } catch (erro) {
+    console.error("Erro ao buscar professor por nome:", erro.message);
+    throw erro;
+  }
+};
+
+export const insertProfessor = async (objectProfessor) => {
+  try {
+    const resposta = await Api.post("/professor", objectProfessor);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao inserir professor:", erro);
+    throw erro;
+  }
+};
+
+export const updateProfessor = async (id, objectProfessor) => {
+  try {
+    const resposta = await Api.put(`/professor/${id}`, objectProfessor);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao atualizar professor:", erro);
+    throw erro;
+  }
+};
+
+export const deleteProfessor = async (id) => {
+  try {
+    const resposta = await Api.delete(`/professor/${id}`);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao excluir professor:", erro);
+    throw erro;
   }
 };
 
@@ -58,66 +111,5 @@ export const getProfessorDisciplina = async () => {
     }
   } catch (erro) {
     console.error("Erro ao buscar os professores:", erro);
-  }
-};
-
-export const insertProfessor = async (objectProfessor) => {
-  try {
-    const resposta = await Api.post("/professor", objectProfessor);
-    return resposta.data;
-  } catch (erro) {
-    console.error("Erro ao inserir professor:", erro);
-    throw erro; // Propaga o erro para ser tratado no componente
-  }
-};
-
-export const updateProfessor = async (id, objectProfessor) => {
-  try {
-    const resposta = await fetch(`http://localhost:8080/api/professor/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(objectProfessor),
-    });
-    if (!resposta.ok) {
-      throw new Error(`HTTP error! status: ${resposta.status}`);
-    }
-    const dadosJson = await resposta.json();
-    return dadosJson;
-  } catch (erro) {
-    console.error("Erro ao atualizar Professor: ", erro);
-  }
-};
-
-export const deleteProfessor = async (id) =>{
-  try {
-      const resposta = await fetch(`http://localhost:8080/api/professor/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!resposta.ok) {
-        throw new Error("HTTP error! status: ", resposta.status);
-      }
-      const dadosJson = await resposta.json();
-      return dadosJson;
-    } catch (erro) {
-      console.error("Erro ao excluir  professor");
-  }
-}
-
-export const getProfessorById = async (id) => {
-  try {
-    const resposta = await Api.get(`/professor/${id}`);
-    if (resposta.data) {
-      return resposta.data;
-    } else {
-      throw new Error("Formato de dados inesperado");
-    }
-  } catch (erro) {
-    console.error("Erro ao buscar professor:", erro.message);
-    throw erro;
   }
 };

@@ -48,7 +48,7 @@ const Professor = () => {
         <Heading
           className="page-title"
           as="h2"
-          fontSize="2xl"
+          fontSize="4xl"
           position="relative"
           textAlign="center"
           _after={{

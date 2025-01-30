@@ -1,20 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { insertDisciplina, getDisciplina, updateDisciplina, deleteDisciplina } from "../../../service/DisciplinaService"; 
 
 const useFormDisciplinaLogic = () => {
   const toast = useToast();
+  const [selectedDisciplina, setSelectedDisciplina] = useState(null);
+  
   const [nome, setNome] = useState("");
-  const [cargaHoraria, setCargaHoraria] = useState("");
+  const [curso, setCurso] = useState(null);
+  
+useEffect(() => {
+
+
+
+})
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!nome || !curso){
+      toast({
+        title: "Erro",
+        description: "Preencha todos os campos antes de enviar.",
+        status: "error",
+        duration: 4000,
+        position: "top-right",
+        isClosable: true,
+      });
+      return;
+    }
     
     try {
-      const disciplinaData = {
-        nome,
-        cargaHoraria: parseInt(cargaHoraria),
-      };
+
+
 
       await insertDisciplina(disciplinaData);
       
@@ -27,8 +44,6 @@ const useFormDisciplinaLogic = () => {
         position: "top-right",
       });
 
-      setNome("");
-      setCargaHoraria("");
     } catch (error) {
       toast({
         title: "Erro",
@@ -44,8 +59,6 @@ const useFormDisciplinaLogic = () => {
   return {
     nome,
     setNome,
-    cargaHoraria,
-    setCargaHoraria,
     handleSubmit,
   };
 };

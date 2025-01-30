@@ -1,81 +1,53 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
-import { postTurma } from "../../../service/TurmaService";
 import { getCurso } from "../../../service/CursoService";
+import { insertMatriz} from "../../../service/MatrizService";
+import { 
+  insertTurma,
+  getMatrizTurma,
+  deleteMatrizTurma
+} from "../../../service/TurmaService";
 
 const useFormTurmaLogic = () => {
   const toast = useToast();
+  const [selectTurma, setSelectTurma] = useState("");
   const [nome, setNome] = useState("");
-  const [curso, setCurso] = useState("");
-  const [periodo, setPeriodo] = useState("");
-  const [cursos, setCursos] = useState([]);
+  const [anoInput, setAnoInput] = useState(ano);
+  const [semestreInput, setSemestreInput] = useState("");
 
-  useEffect(() => {
-    const fetchCursos = async () => {
-      try {
-        const response = await getCurso();
-        setCursos(response);
+  const [selectedCurso, setSelectedCurso] = useState(null);
+  const [disponiveis, setDisponiveis] = useState([]);
+  const [selecionadas, setSelecionadas] = useState([]);
+
+  const disponiveisFiltrados = disponiveis.filter((disciplina) =>
+    disciplina.nome.toLowerCase().includes(searchDisponiveis.toLowerCase())
+  );
+
+  const selecionadasFiltradas = selecionadas.filter((disciplina) =>
+    disciplina.nome.toLowerCase().includes(searchSelecionadas.toLowerCase())
+  );
+
+useEffect(() => {
+    const fetchDisponibilidade = async () => {
+      try{
+        if (!nome || !anoInput || !semestreInput) return;
+
+        const resultado = await getMatrizTurma(selectTurma.id)
+
       } catch (error) {
+        console.error("Erro ao buscar disponibilidade:", error);
         toast({
           title: "Erro",
-          description: "Erro ao carregar cursos",
+          description: "Falha ao buscar disponibilidade do professor.",
           status: "error",
-          duration: 3000,
-          isClosable: true,
+          duration: 4000,
           position: "top-right",
+          isClosable: true,
         });
       }
-    };
-
-    fetchCursos();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    try {
-      const turmaData = {
-        nome,
-        cursoId: parseInt(curso),
-        periodo: parseInt(periodo),
-      };
-
-      await postTurma(turmaData);
-      
-      toast({
-        title: "Sucesso",
-        description: "Turma cadastrada com sucesso",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
-
-      setNome("");
-      setCurso("");
-      setPeriodo("");
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Erro ao cadastrar turma",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
     }
-  };
+})
 
-  return {
-    nome,
-    setNome,
-    curso,
-    setCurso,
-    periodo,
-    setPeriodo,
-    cursos,
-    handleSubmit,
-  };
-};
 
+}
 export default useFormTurmaLogic; 

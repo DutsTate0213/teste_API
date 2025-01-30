@@ -4,16 +4,31 @@ import { insertCurso, getCurso, updateCurso, deleteCurso } from "../../../servic
 
 const useFormCursoLogic = () => {
   const toast = useToast();
+  const [selectCurso, setSelectCurso] = useState("");
   const [nome, setNome] = useState("");
-  const [turno, setTurno] = useState("");
+
+  useState(() => {
+
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (!nome){
+      toast({
+        title: "Erro",
+        description: "Preencha todos os campos antes de enviar.",
+        status: "error",
+        duration: 4000,
+        position: "top-right",
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
       const cursoData = {
         nome,
-        turno,
       };
 
       await insertCurso(cursoData);
@@ -44,8 +59,6 @@ const useFormCursoLogic = () => {
   return {
     nome,
     setNome,
-    turno,
-    setTurno,
     handleSubmit,
   };
 };

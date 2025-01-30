@@ -29,8 +29,10 @@ const Configuracao = () => {
         getDiaSemana(),
         getTurno(),
       ]);
-      setDiasSemana(diasResponse.data || []);
-      setTurnos(turnosResponse.data || []);
+      const sortedDias = (diasResponse.data || []).sort((a, b) => a.id - b.id);
+      const sortedTurnos = (turnosResponse.data || []).sort((a, b) => a.id - b.id);
+      setDiasSemana(sortedDias);
+      setTurnos(sortedTurnos);
     } catch (error) {
       showToast("Erro ao carregar dados", "error");
     }
@@ -96,7 +98,26 @@ const Configuracao = () => {
 
   return (
     <Box p={6}>
-      <Heading mb={6}>Configurações</Heading>
+      <Heading
+        className="page-title"
+        as="h2"
+        fontSize="4xl"
+        position="relative"
+        textAlign="center"
+        _after={{
+          content: '""',
+          display: "block",
+          width: "100%",
+          height: "7px",
+          backgroundColor: "purple.500",
+          position: "absolute",
+          bottom: "-5px",
+          left: 0,
+        }}
+      >
+        Configuração
+      </Heading>
+
       
       <VStack spacing={6} align="stretch">
         <Box>

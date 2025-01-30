@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/global.css";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Box, Flex, Text, Circle, Button } from "@chakra-ui/react";
 import { getCurso } from "../service/CursoService";
 
 const Curso = () => {
@@ -16,7 +16,25 @@ const Curso = () => {
   return (
     <div className="page-container">
     <div className="content-wrapper">
-        <Heading as="h1" className="page-title">Disciplina</Heading>
+        <Heading
+          className="page-title"
+          as="h2"
+          fontSize="4xl"
+          position="relative"
+          textAlign="center"
+          _after={{
+            content: '""',
+            display: "block",
+            width: "100%",
+            height: "7px",
+            backgroundColor: "purple.500",
+            position: "absolute",
+            bottom: "-5px",
+            left: 0,
+          }}
+        >
+          Curso
+        </Heading>
     </div>
 </div>
   );

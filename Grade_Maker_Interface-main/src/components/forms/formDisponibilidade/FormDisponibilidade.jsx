@@ -31,7 +31,6 @@ const FormDisponibilidade = ({ ano, days = [], turnos = [], professores = [], cu
     selecionadas,
     moverParaSelecionadas,
     moverParaDisponiveis,
-    handleCancelar,
     handleToggle,
     handleSubmit,
     searchDisponiveis,
@@ -45,6 +44,8 @@ const FormDisponibilidade = ({ ano, days = [], turnos = [], professores = [], cu
     moverTodosParaSelecionadas,
     moverTodosParaDisponiveis,
     handleAnoChange,
+    handleCancelarAlteracoes,
+    hasChanges,
   } = useFormDisponibilidadeLogic(ano, professores, cursos, days, turnos);
 
   // Ordena os arrays de dias e turnos pelo ID
@@ -316,6 +317,8 @@ const FormDisponibilidade = ({ ano, days = [], turnos = [], professores = [], cu
             width="100px"
             color="white"
             colorScheme="purple"
+            onClick={handleCancelarAlteracoes}
+            isDisabled={!hasChanges} // Desativa se não houver alterações
             _focus={{
               boxShadow:
                 "0 0 1px 2px rgba(173, 216, 230, .75), 0 1px 1px rgba(0, 0, 0, .15)",

@@ -38,14 +38,11 @@ const FormProfessor = ({ isOpen, onClose }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="purple" mr={3} onClick={handleSubmitProfessor}> 
-            Salvar
-          </Button>
-          <Button variant="ghost" onClick={() => {
-            handleCancelar();
-            onClose();
-          }}>
+          <Button colorScheme="purple" mr="auto" onClick={() => { handleCancelar(); onClose();}}>
             Cancelar
+          </Button>
+          <Button colorScheme="purple" ml="auto" onClick={handleSubmitProfessor}> 
+            Salvar
           </Button>
         </ModalFooter>
       </ModalContent>

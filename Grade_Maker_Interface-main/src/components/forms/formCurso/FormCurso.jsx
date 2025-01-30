@@ -10,12 +10,10 @@ import {
 } from "@chakra-ui/react";
 import useFormCursoLogic from "./FormCursoLogic";
 
-const FormCurso = () => {
+const FormCurso = ({ nome }) => {
   const {
     nome,
     setNome,
-    turno,
-    setTurno,
     handleSubmit,
   } = useFormCursoLogic();
 
@@ -32,19 +30,9 @@ const FormCurso = () => {
             />
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Turno</FormLabel>
-            <Select
-              value={turno}
-              onChange={(e) => setTurno(e.target.value)}
-              placeholder="Selecione o turno"
-            >
-              <option value="MANHA">Manhã</option>
-              <option value="TARDE">Tarde</option>
-              <option value="NOITE">Noite</option>
-            </Select>
-          </FormControl>
-
+          <Button type="submit" colorScheme="purple" width="full">
+            Salvar
+          </Button>
           <Button type="submit" colorScheme="purple" width="full">
             Salvar
           </Button>
