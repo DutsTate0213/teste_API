@@ -1,53 +1,188 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
-import { getCurso } from "../../../service/CursoService";
-import { insertMatriz} from "../../../service/MatrizService";
-import { 
-  insertTurma,
-  getMatrizTurma,
-  deleteMatrizTurma
-} from "../../../service/TurmaService";
+import { insertTurma, getTurma, updateTurma, deleteTurma } from "../../../service/TurmaService";
+import { insertMatriz, getMatriz, updateMatriz, deleteMatriz } from "../../../service/MatrizService";
 
-const useFormTurmaLogic = () => {
+
+const useFormTurmaLogic = ({ isOpen, onClose, initialNome, onSuccess, ano, turnos, cursos, days }) => {
   const toast = useToast();
-  const [selectTurma, setSelectTurma] = useState("");
-  const [nome, setNome] = useState("");
-  const [anoInput, setAnoInput] = useState(ano);
-  const [semestreInput, setSemestreInput] = useState("");
 
+  const [nome, setNome] = useState(initialNome || "");
+  const [curso, setCurso] = useState();
+
+  // Estados adicionais para gerenciamento de disciplinas
   const [selectedCurso, setSelectedCurso] = useState(null);
   const [disponiveis, setDisponiveis] = useState([]);
   const [selecionadas, setSelecionadas] = useState([]);
 
-  const disponiveisFiltrados = disponiveis.filter((disciplina) =>
-    disciplina.nome.toLowerCase().includes(searchDisponiveis.toLowerCase())
-  );
+  const [selectedTurno, setSelectedTurno] = useState();
+  const [semestreInput, setSemestreInput] = useState();
+  const [anoInput, setAnoInput] = useState(ano);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [initialState, setInitialState] = useState(initialNome || "");
+      
 
-  const selecionadasFiltradas = selecionadas.filter((disciplina) =>
-    disciplina.nome.toLowerCase().includes(searchSelecionadas.toLowerCase())
-  );
+  // Simplify the useEffect hooks into a single one
+  useEffect(() => {
+    const fetchDisciplina = async () => {
+      if (disciplinaId && !initialNome) {
+        try {
+          const response = await getDisciplina(disciplinaId);
+          setNome(response.nome || "");
+        } catch (error) {
+          toast({
+            title: "Erro",
+            description: "Erro ao carregar dados da disciplina",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+          setNome("");
+        }
+      } else if (initialNome) {
+        setNome(initialNome);
+      }
+    };
+    
+    if (isOpen) {
+      setInitialState(initialNome || "");
+      setNome(initialNome || "");
+      setHasChanges(false);
+      fetchDisciplina();
+    } else {
+      setNome("");
+    }
+  }, [disciplinaId, isOpen, initialNome]);
 
-useEffect(() => {
-    const fetchDisponibilidade = async () => {
-      try{
-        if (!nome || !anoInput || !semestreInput) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!nome) {
+      toast({
+        title: "Erro",
+        description: "Preencha todos os campos antes de enviar.",
+        status: "error",
+        duration: 4000,
+        position: "top-right",
+        isClosable: true,
+      });
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      const disciplinaData = {
+        nome,
+      };
 
-        const resultado = await getMatrizTurma(selectTurma.id)
+      if (disciplinaId) {
+        await updateDisciplina(disciplinaId, disciplinaData);
+      } else {
+        await insertDisciplina(disciplinaData);
+      }
 
+      toast({
+        title: "Sucesso",
+        description: disciplinaId 
+          ? "Disciplina atualizada com sucesso"
+          : "Disciplina cadastrada com sucesso",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      
+      if (onSuccess) onSuccess();
+      setHasChanges(false);
+      onClose();
+      setNome("");
+
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: error.message || "Erro ao processar disciplina",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelar = () => {
+    if (hasChanges) {
+      const confirmCancel = window.confirm("Tem certeza de que deseja cancelar as alterações?");
+      if (confirmCancel) {
+        setNome(initialState);
+        setHasChanges(false);
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
+
+  // Update setNome to track changes
+  const handleNomeChange = (newValue) => {
+    setNome(newValue);
+    setHasChanges(newValue !== initialState);
+  };
+
+  const handleDelete = async () => {
+    if (!disciplinaId) return;
+
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja excluir esta disciplina? Esta ação não pode ser desfeita."
+    );
+
+    if (confirmDelete) {
+      setIsLoading(true);
+      try {
+        // Primeiro deletar todas as relações da disciplina com cursos
+        await deleteDisciplinaCursoByDisciplinaId(disciplinaId);
+        
+        // Depois deletar a disciplina
+        await deleteDisciplina(disciplinaId);
+
+        toast({
+          title: "Sucesso",
+          description: "Disciplina excluída com sucesso",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+
+        if (onSuccess) onSuccess();
+        onClose();
       } catch (error) {
-        console.error("Erro ao buscar disponibilidade:", error);
+        console.error("Erro ao excluir disciplina:", error);
         toast({
           title: "Erro",
-          description: "Falha ao buscar disponibilidade do professor.",
+          description: error.response?.data?.message || "Erro ao excluir a disciplina",
           status: "error",
-          duration: 4000,
-          position: "top-right",
+          duration: 3000,
           isClosable: true,
+          position: "top-right",
         });
+      } finally {
+        setIsLoading(false);
       }
     }
-})
+  };
 
+  return {
+    nome,
+    setNome: handleNomeChange,
+    handleSubmit,
+    handleCancelar,
+    handleDelete,
+    isLoading,
+    hasChanges
+  };
+};
 
-}
 export default useFormTurmaLogic; 

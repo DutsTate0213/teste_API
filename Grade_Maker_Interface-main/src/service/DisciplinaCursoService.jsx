@@ -101,7 +101,7 @@ export const deleteDisciplinaCursoByDisciplinaId = async (disciplinaId) => {
     const response = await Api.delete(`/disciplina-curso/disciplina/${disciplinaId}`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao deletar disciplinas do curso pelo id da disciplina:", error);
+    console.error("Erro ao deletar relações da disciplina:", error);
     throw error;
   }
 };

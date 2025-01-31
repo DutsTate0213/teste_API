@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
-import { insertDisciplina, getDisciplina, updateDisciplina, deleteDisciplinaCursoByDisciplinaId } from "../../../service/DisciplinaService";
+import { insertDisciplina, getDisciplina, updateDisciplina, deleteDisciplina } from "../../../service/DisciplinaService";
+import { deleteDisciplinaCursoByDisciplinaId } from "../../../service/DisciplinaCursoService";
 
 const useFormDisciplinaLogic = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess }) => {
   const toast = useToast();
@@ -118,11 +119,55 @@ const useFormDisciplinaLogic = ({ isOpen, onClose, disciplinaId, initialNome, on
     setHasChanges(newValue !== initialState);
   };
 
+  const handleDelete = async () => {
+    if (!disciplinaId) return;
+
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja excluir esta disciplina? Esta ação não pode ser desfeita."
+    );
+
+    if (confirmDelete) {
+      setIsLoading(true);
+      try {
+        // Primeiro deletar todas as relações da disciplina com cursos
+        await deleteDisciplinaCursoByDisciplinaId(disciplinaId);
+        
+        // Depois deletar a disciplina
+        await deleteDisciplina(disciplinaId);
+
+        toast({
+          title: "Sucesso",
+          description: "Disciplina excluída com sucesso",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+
+        if (onSuccess) onSuccess();
+        onClose();
+      } catch (error) {
+        console.error("Erro ao excluir disciplina:", error);
+        toast({
+          title: "Erro",
+          description: error.response?.data?.message || "Erro ao excluir a disciplina",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return {
     nome,
     setNome: handleNomeChange,
     handleSubmit,
     handleCancelar,
+    handleDelete,
     isLoading,
     hasChanges
   };

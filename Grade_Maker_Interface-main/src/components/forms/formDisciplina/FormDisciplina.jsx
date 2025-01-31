@@ -15,6 +15,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import useFormDisciplinaLogic from "./FormDisciplinaLogic";
+import { DeleteIcon } from '@chakra-ui/icons';
 
 const FormDisciplina = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess }) => {
   const {
@@ -23,7 +24,8 @@ const FormDisciplina = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess 
     handleSubmit,
     handleCancelar,
     isLoading,
-    hasChanges
+    hasChanges,
+    handleDelete,
   } = useFormDisciplinaLogic({ isOpen, onClose, disciplinaId, initialNome, onSuccess });
 
   return (
@@ -45,21 +47,35 @@ const FormDisciplina = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess 
                   placeholder="Nome da disciplina"
                 />
               </FormControl>
+
               <Flex gap={4} justify="space-between" mt={4}>
-                <Button 
-                  colorScheme="purple" 
-                  onClick={handleCancelar}
-                >
-                  Cancelar
-                </Button>
-                <Button 
-                  type="submit" 
-                  colorScheme="purple"
-                  isLoading={isLoading}
-                  isDisabled={!hasChanges}
-                >
-                  {disciplinaId ? 'Atualizar' : 'Salvar'}
-                </Button>
+                {disciplinaId && (
+                  <Button 
+                    colorScheme="red"
+                    onClick={handleDelete}
+                    isLoading={isLoading}
+                    leftIcon={<DeleteIcon />}
+                  >
+                    Excluir
+                  </Button>
+                )}
+                <Flex gap={2} ml="auto">
+                  <Button 
+                    colorScheme="purple" 
+                    variant="outline"
+                    onClick={handleCancelar}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    colorScheme="purple"
+                    isLoading={isLoading}
+                    isDisabled={!hasChanges}
+                  >
+                    {disciplinaId ? 'Atualizar' : 'Salvar'}
+                  </Button>
+                </Flex>
               </Flex>
             </form>
           </Box>

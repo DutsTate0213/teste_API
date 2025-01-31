@@ -119,6 +119,7 @@ const ViewProfessor = ({ isOpen, onClose, professor }) => {
                   bg="purple.50"
                   borderBottom="1px solid"
                   borderColor="gray.200"
+                  color='gray'
                 >
                   Grade de Disponibilidade
                 </Text>
@@ -170,7 +171,8 @@ const ViewProfessor = ({ isOpen, onClose, professor }) => {
                   p={4} 
                   bg="purple.50"
                   borderBottom="1px solid"
-                  borderColor="gray.200"
+                  borderColor="gray.600"
+                  color='gray'
                 >
                   Disciplinas
                 </Text>

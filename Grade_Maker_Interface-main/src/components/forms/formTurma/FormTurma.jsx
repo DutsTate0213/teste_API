@@ -1,70 +1,87 @@
 import React from "react";
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
   Box,
   Button,
   FormControl,
   FormLabel,
   Input,
-  VStack,
   Select,
-  NumberInput,
-  NumberInputField,
+  Flex,
 } from "@chakra-ui/react";
 import useFormTurmaLogic from "./FormTurmaLogic";
+import { DeleteIcon } from '@chakra-ui/icons';
 
-const FormTurma = () => {
+const FormTurma = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess }) => {
   const {
     nome,
     setNome,
-    curso,
-    setCurso,
-    periodo,
-    setPeriodo,
-    cursos,
     handleSubmit,
-  } = useFormTurmaLogic();
+    handleCancelar,
+    isLoading,
+    hasChanges,
+    handleDelete,
+  } = useFormDisciplinaLogic({ isOpen, onClose, disciplinaId, initialNome, onSuccess });
 
   return (
-    <Box p={4}>
-      <form onSubmit={handleSubmit}>
-        <VStack spacing={4}>
-          <FormControl isRequired>
-            <FormLabel>Nome da Turma</FormLabel>
-            <Input
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              placeholder="Nome da turma"
-            />
-          </FormControl>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>
+          {disciplinaId ? 'Editar Disciplina' : 'Adicionar Disciplina'}
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Box p={4}>
+            <form onSubmit={handleSubmit}>
+              <FormControl isRequired mb={4}>
+                <FormLabel>Nome da Disciplina</FormLabel>
+                <Input
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  placeholder="Nome da disciplina"
+                />
+              </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Curso</FormLabel>
-            <Select
-              value={curso}
-              onChange={(e) => setCurso(e.target.value)}
-              placeholder="Selecione o curso"
-            >
-              {cursos.map((curso) => (
-                <option key={curso.id} value={curso.id}>
-                  {curso.nome}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl isRequired>
-            <FormLabel>Período</FormLabel>
-            <NumberInput min={1} max={10} value={periodo} onChange={(value) => setPeriodo(value)}>
-              <NumberInputField placeholder="Período" />
-            </NumberInput>
-          </FormControl>
-
-          <Button type="submit" colorScheme="purple" width="full">
-            Salvar
-          </Button>
-        </VStack>
-      </form>
-    </Box>
+              <Flex gap={4} justify="space-between" mt={4}>
+                {disciplinaId && (
+                  <Button 
+                    colorScheme="red"
+                    onClick={handleDelete}
+                    isLoading={isLoading}
+                    leftIcon={<DeleteIcon />}
+                  >
+                    Excluir
+                  </Button>
+                )}
+                <Flex gap={2} ml="auto">
+                  <Button 
+                    colorScheme="purple" 
+                    variant="outline"
+                    onClick={handleCancelar}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    colorScheme="purple"
+                    isLoading={isLoading}
+                    isDisabled={!hasChanges}
+                  >
+                    {disciplinaId ? 'Atualizar' : 'Salvar'}
+                  </Button>
+                </Flex>
+              </Flex>
+            </form>
+          </Box>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 
