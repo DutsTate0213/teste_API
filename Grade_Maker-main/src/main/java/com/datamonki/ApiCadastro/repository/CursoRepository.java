@@ -17,6 +17,8 @@ public interface CursoRepository extends JpaRepository<Curso, Integer> {
 
     // Busca um curso pelo nome ignorando o case(nao diferencia maiusculo de minusculo) 
     List<Curso> findByNomeContainingIgnoreCase(String nome);
-    
+
+    // Buscar curso ordenado por nome
+    List<Curso> findByOrderByNomeAsc();
     
 }

@@ -32,6 +32,11 @@ public class DisciplinaCursoController {
         return disciplinaCursoService.getAll();
     }
     
+    @GetMapping("/disciplina/{id}")
+    public ResponseEntity<ApiResponse> findByIdDisciplina(@PathVariable Integer id) {
+        return disciplinaCursoService.findByIdDisciplina(id);
+    }
+    
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {

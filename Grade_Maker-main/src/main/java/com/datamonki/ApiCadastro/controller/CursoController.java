@@ -48,6 +48,12 @@ public class CursoController {
 
 		return cursoService.getByNome(nome);
 	}
+
+	@GetMapping("/nome/order")
+	public ResponseEntity<ApiResponse> getByOrderNome() {
+
+		return cursoService.getByOrderNome();
+	}
 	
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")

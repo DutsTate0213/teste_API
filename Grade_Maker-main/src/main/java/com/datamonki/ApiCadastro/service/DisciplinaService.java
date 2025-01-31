@@ -78,6 +78,11 @@ public class DisciplinaService {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Disciplina com o nome '"+ nome +"' encontrada com sucesso", disciplina));
     }
 
+    public ResponseEntity<ApiResponse> getByOrderNome(){
+        List<Disciplina> disciplina = disciplinaRepository.findByOrderByNomeAsc();
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Lista de disciplinas cadastradas ordenadas por nome", disciplina));
+    }
+
     @Transactional
     public ResponseEntity<ApiResponse> update(Integer id_disciplina, DisciplinaDto disciplinaDto){
         verificar(disciplinaDto);

@@ -14,6 +14,20 @@ export const getCurso = async () => {
   }
 };
 
+export const getCursoOrderByNome = async () => {
+  try {
+    const resposta = await Api.get("/curso/nome/order");
+    if (resposta.data && Array.isArray(resposta.data)) {
+      return resposta.data;
+    } else {
+      throw new Error("Formato de dados inesperado");
+    }
+  } catch (erro) {
+    console.error("Erro ao buscar os cursos:", erro.message);
+    throw erro;
+  }
+};
+
 export const insertCurso = async (objectCurso) => {
   try {
     const resposta = await Api.post("/curso", objectCurso);

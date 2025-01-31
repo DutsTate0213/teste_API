@@ -43,6 +43,11 @@ public class DisciplinaController {
     public ResponseEntity<ApiResponse> getByNome(@PathVariable String nome) {
         return disciplinaService.getByNome(nome);
     }
+
+    @GetMapping("/nome/order")
+    public ResponseEntity<ApiResponse> getByOrderNome() {
+        return disciplinaService.getByOrderNome();
+    }
     
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")

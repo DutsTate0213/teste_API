@@ -15,4 +15,7 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Integer>
 
     // Busca uma disciplina pelo nome ignorando o case
     List<Disciplina> findByNomeContainingIgnoreCase(String nome);
+
+    // Buscar disciplina ordenado por nome
+    List<Disciplina> findByOrderByNomeAsc();
 }

@@ -74,6 +74,14 @@ public class DisciplinaCursoService {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Conexão entre Disciplina e Curso com o id '"+ id_disciplinaCurso +"' encontrado com sucesso\"", disciplinaCursos));
     }
 
+    public ResponseEntity<ApiResponse> findByIdDisciplina(Integer id_disciplina) {
+        verificarIdDisciplina(id_disciplina);
+
+        List<DisciplinaCurso> disciplinaCursos = disciplinaCursoRepository.findByDisciplinaId(id_disciplina);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse("Conexão entre Disciplina e Curso com o id '"+ id_disciplina +"' encontrado com sucesso", disciplinaCursos));
+    }
+
     @Transactional
     public ResponseEntity<ApiResponse> update(Integer id_disciplinaCurso,DisciplinaCursoDto DisciplinaCursoDto){
         verificarIdDisciplinaCurso(id_disciplinaCurso);

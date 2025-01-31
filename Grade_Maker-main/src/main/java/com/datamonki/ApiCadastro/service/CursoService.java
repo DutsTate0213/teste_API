@@ -78,6 +78,11 @@ public class CursoService {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Curso com o nome '"+ nome +"' encontrado com sucesso", curso));
     }
 
+    public ResponseEntity<ApiResponse> getByOrderNome(){
+        List<Curso> curso = cursoRepository.findByOrderByNomeAsc();
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Lista de cursos cadastrados ordenados por nome", curso));
+    }
+
     @Transactional
     public ResponseEntity<ApiResponse> update(Integer id_curso, CursoDto cursoDto){
         verificar(cursoDto);

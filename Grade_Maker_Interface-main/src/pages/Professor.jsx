@@ -89,8 +89,8 @@ const Professor = () => {
                 key={index}
                 as="div"
                 variant="unstyled"
-                w={{ base: "100%", sm: "48%", md: "45%", lg: "30%" }}
-                mb={4}
+                w={{ base: "100%", sm: "48%", md: "45%", lg: "35%" }}
+                mb={1}
                 onClick={() => openView(professor)}
                 _hover={{
                   backgroundColor: "purple.600",
@@ -117,7 +117,7 @@ const Professor = () => {
                   </Circle>
                   <Box>
                     <Text
-                      fontSize={{ base: "md", md: "lg", lg: "xl" }}
+                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
                       fontWeight="bold"
                       maxW="200px"
                       whiteSpace="nowrap"
