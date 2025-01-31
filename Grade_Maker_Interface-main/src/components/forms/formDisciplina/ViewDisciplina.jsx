@@ -38,7 +38,7 @@ const ViewDisciplina = ({ isOpen, onClose, disciplina }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size='xl'>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{disciplinaData.nome}</ModalHeader>

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
-import { insertDisciplina, getDisciplina, updateDisciplina } from "../../../service/DisciplinaService";
+import { insertDisciplina, getDisciplina, updateDisciplina, deleteDisciplinaCursoByDisciplinaId } from "../../../service/DisciplinaService";
 
 const useFormDisciplinaLogic = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess }) => {
   const toast = useToast();
   const [nome, setNome] = useState(initialNome || "");
   const [isLoading, setIsLoading] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [initialState, setInitialState] = useState(initialNome || "");
       
 
   // Simplify the useEffect hooks into a single one
@@ -32,6 +34,9 @@ const useFormDisciplinaLogic = ({ isOpen, onClose, disciplinaId, initialNome, on
     };
     
     if (isOpen) {
+      setInitialState(initialNome || "");
+      setNome(initialNome || "");
+      setHasChanges(false);
       fetchDisciplina();
     } else {
       setNome("");
@@ -76,6 +81,7 @@ const useFormDisciplinaLogic = ({ isOpen, onClose, disciplinaId, initialNome, on
       });
       
       if (onSuccess) onSuccess();
+      setHasChanges(false);
       onClose();
       setNome("");
 
@@ -93,11 +99,32 @@ const useFormDisciplinaLogic = ({ isOpen, onClose, disciplinaId, initialNome, on
     }
   };
 
+  const handleCancelar = () => {
+    if (hasChanges) {
+      const confirmCancel = window.confirm("Tem certeza de que deseja cancelar as alterações?");
+      if (confirmCancel) {
+        setNome(initialState);
+        setHasChanges(false);
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  };
+
+  // Update setNome to track changes
+  const handleNomeChange = (newValue) => {
+    setNome(newValue);
+    setHasChanges(newValue !== initialState);
+  };
+
   return {
     nome,
-    setNome,
-    isLoading,
+    setNome: handleNomeChange,
     handleSubmit,
+    handleCancelar,
+    isLoading,
+    hasChanges
   };
 };
 

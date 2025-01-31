@@ -30,7 +30,8 @@ CREATE TABLE curso (
 
 CREATE TABLE turno (
     id SERIAL PRIMARY KEY ,
-    descricao VARCHAR(255)
+    descricao VARCHAR(255),
+    ativo INTEGER
 );
 
 CREATE TABLE disciplina (
@@ -45,7 +46,8 @@ CREATE TABLE professor (
 
 CREATE TABLE dia_semana (
     id SERIAL PRIMARY KEY ,
-    descricao VARCHAR(255)
+    descricao VARCHAR(255),
+    ativo INTEGER
 );
 
 CREATE TABLE turma (
@@ -138,19 +140,19 @@ CREATE TABLE usuario_roles (
 
 -- ______________________________________
 
-INSERT INTO turno (descricao) VALUES
-('Matutino'),   -- 1
-('Vespertino'), -- 2
-('Noturno');    -- 3
+INSERT INTO turno (descricao, ativo) VALUES
+('Matutino', 1),   -- 1
+('Vespertino', 1), -- 2
+('Noturno', 1);    -- 3
 
-INSERT INTO dia_semana (descricao) VALUES
-('Domingo'),          -- 1
-('Segunda-feira'),    -- 2
-('Terça-feira'),      -- 3
-('Quarta-feira'),     -- 4
-('Quinta-feira'),     -- 5
-('Sexta-feira'),      -- 6
-('Sábado');           -- 7
+INSERT INTO dia_semana (descricao, ativo) VALUES
+('Domingo', 1),          -- 1
+('Segunda-feira', 1),    -- 2
+('Terça-feira', 1),      -- 3
+('Quarta-feira', 1),     -- 4
+('Quinta-feira', 1),     -- 5
+('Sexta-feira', 1),      -- 6
+('Sábado', 1);           -- 7
 
 INSERT INTO professor (nome) VALUES
 ('Alex Delgado Goncalves Casanas'),        -- 1

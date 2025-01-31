@@ -28,6 +28,16 @@ export const getCursoOrderByNome = async () => {
   }
 };
 
+export const getCursoByNome = async (nome) => {
+  try {
+    const resposta = await Api.get(`/curso/nome/${nome}`);
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao buscar curso pelo nome:", erro);
+    throw erro;
+  }
+};
+
 export const insertCurso = async (objectCurso) => {
   try {
     const resposta = await Api.post("/curso", objectCurso);

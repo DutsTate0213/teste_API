@@ -37,6 +37,11 @@ public class DisciplinaCursoController {
         return disciplinaCursoService.findByIdDisciplina(id);
     }
     
+    @GetMapping("/curso/{id}")
+    public ResponseEntity<ApiResponse> findByIdCurso(@PathVariable Integer id) {
+        return disciplinaCursoService.findByIdCurso(id);
+    }
+    
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) {
@@ -53,5 +58,17 @@ public class DisciplinaCursoController {
     @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN', 'ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody DisciplinaCursoDto disciplinaCursoDto) {
         return disciplinaCursoService.update(id, disciplinaCursoDto);
+    }
+    
+    @DeleteMapping("/curso/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
+    public ResponseEntity<ApiResponse> deleteByCursoId(@PathVariable Integer id) {
+        return disciplinaCursoService.deleteByCursoId(id);
+    }
+    
+    @DeleteMapping("/disciplina/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
+    public ResponseEntity<ApiResponse> deleteByDisciplinaId(@PathVariable Integer id) {
+        return disciplinaCursoService.deleteByDisciplinaId(id);
     }
 }

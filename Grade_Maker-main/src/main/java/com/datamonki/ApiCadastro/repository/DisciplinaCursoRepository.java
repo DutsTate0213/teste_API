@@ -12,4 +12,13 @@ public interface DisciplinaCursoRepository extends JpaRepository<DisciplinaCurso
 
     // Buscar disciplinaCurso pela disciplina
     List<DisciplinaCurso> findByDisciplinaId(Integer idDisciplina);
+
+    // Buscar disciplinaCurso pelo cursoadi
+    List<DisciplinaCurso> findByCursoId(Integer idCurso);
+
+    // Deletar disciplinaCurso pelo cursoId
+    void deleteByCursoId(Integer idCurso);
+
+    // Deletar disciplinaCurso pelo disciplinaId
+    void deleteByDisciplinaId(Integer idDisciplina);
 }

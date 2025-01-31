@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 const FormProfessor = ({ isOpen, onClose }) => {
-  const { professor, setProfessor, handleSubmitProfessor, handleCancelar } = useFormProfessorLogic(onClose);
+  const { professor, setProfessor, handleSubmitProfessor, handleCancelar, hasChanges } = useFormProfessorLogic(onClose);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -38,10 +38,19 @@ const FormProfessor = ({ isOpen, onClose }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="purple" mr="auto" onClick={() => { handleCancelar(); onClose();}}>
+          <Button 
+            colorScheme="purple" 
+            mr="auto" 
+            onClick={handleCancelar}
+          >
             Cancelar
           </Button>
-          <Button colorScheme="purple" ml="auto" onClick={handleSubmitProfessor}> 
+          <Button 
+            colorScheme="purple" 
+            ml="auto" 
+            onClick={handleSubmitProfessor}
+            isDisabled={!hasChanges}
+          > 
             Salvar
           </Button>
         </ModalFooter>

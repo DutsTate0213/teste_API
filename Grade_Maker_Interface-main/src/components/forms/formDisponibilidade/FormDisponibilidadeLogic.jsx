@@ -49,7 +49,7 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
         // Filtrar disponibilidades por ano e semestre
         const disponibilidadesFiltradas = resultado.filter(
           (disp) =>
-            disp.ano === parseInt(anoInput.year()) &&
+            disp.ano === parseInt(anoInput) &&
             disp.semestre === parseInt(semestreInput)
         );
   
@@ -208,7 +208,6 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
 
     try {
       const payload = [];
-      const anoValue = anoInput.year();
       
       // Itera sobre as disciplinas selecionadas
       selecionadas.forEach((disciplina) => {
@@ -229,7 +228,7 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
                   idTurno: parseInt(idTurno),
                   idDiaSemana: parseInt(idDiaSemana),
                   semestre: parseInt(semestreInput),
-                  ano: anoValue,
+                  ano: parseInt(anoInput),
                 });
               }
             });
@@ -239,7 +238,7 @@ const useFormDisponibilidadeLogic = (ano, professores, cursos, days, turnos) => 
       });
 
       // Deleta registros existentes antes de inserir novos
-      await deleteByIdProfessorAnoSemestre(selectedProfessor?.id, anoValue, semestreInput);
+      await deleteByIdProfessorAnoSemestre(selectedProfessor?.id, ano, semestreInput);
       await insertListaDisponibilidade(payload);
       
       toast({

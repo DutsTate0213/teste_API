@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/global.css";
-import { Heading, Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Heading, Box, Flex, Text, Button, SimpleGrid } from "@chakra-ui/react";
 import { getCursoOrderByNome } from "../service/CursoService";
 import FormCurso from "../components/forms/formCurso/FormCurso";
 import ViewCurso from "../components/forms/formCurso/ViewCurso";
@@ -94,53 +94,55 @@ const Curso = () => {
             gap={4}
             rowGap={20}
           >
-            {cursos.map((curso, index) => (
-              <Button
-                key={index}
-                as="div"
-                variant="unstyled"
-                w={{ base: "100%", sm: "48%", md: "45%", lg: "300px" }}
-                mb={1}
-                onClick={() => handleViewCurso(curso)}
-                _hover={{
-                  backgroundColor: "purple.600",
-                  cursor: "pointer",
-                }}
-              >
-                <Box
-                  bg="purple.800"
-                  color="white"
-                  p={5}
-                  borderRadius="lg"
-                  display="flex"
-                  alignItems="center"
-                  h="auto"
-                  overflow="hidden"
+            <SimpleGrid columns={[2, null, 3]} spacing='60px 20px' width="100%">
+              {cursos.map((curso, index) => (
+                <Button
+                  key={index}
+                  as="div"
+                  variant="unstyled"
+                  w="100%"
+                  mb={1}
+                  onClick={() => handleViewCurso(curso)}
+                  _hover={{
+                    backgroundColor: "purple.600",
+                    cursor: "pointer",
+                  }}
                 >
-                  <Box>
-                    <Text
-                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
-                      fontWeight="bold"
-                      maxW="250px"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                    >
-                      {curso.nome}
-                    </Text>
-                    <Text
-                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
-                      maxW="200px"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                    >
-                      {curso.disciplinas?.length || 0} disciplinas
-                    </Text>
+                  <Box
+                    bg="purple.800"
+                    color="white"
+                    p={5}
+                    borderRadius="lg"
+                    display="flex"
+                    alignItems="center"
+                    h="auto"
+                    overflow="hidden"
+                  >
+                    <Box>
+                      <Text
+                        fontSize={{ base: "xs", md: "sm", lg: "md" }}
+                        fontWeight="bold"
+                        maxW="250px"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                      >
+                        {curso.nome}
+                      </Text>
+                      <Text
+                        fontSize={{ base: "xs", md: "sm", lg: "md" }}
+                        maxW="200px"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                      >
+                        {curso.disciplinas?.length || 0} disciplinas
+                      </Text>
+                    </Box>
                   </Box>
-                </Box>
-              </Button>
-            ))}
+                </Button>
+              ))}
+            </SimpleGrid>
           </Flex>
         </Flex>
 

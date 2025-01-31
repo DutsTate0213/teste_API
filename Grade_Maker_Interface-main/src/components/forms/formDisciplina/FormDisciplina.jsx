@@ -12,6 +12,7 @@ import {
   FormLabel,
   Input,
   Select,
+  Flex,
 } from "@chakra-ui/react";
 import useFormDisciplinaLogic from "./FormDisciplinaLogic";
 
@@ -20,7 +21,9 @@ const FormDisciplina = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess 
     nome,
     setNome,
     handleSubmit,
-    isLoading
+    handleCancelar,
+    isLoading,
+    hasChanges
   } = useFormDisciplinaLogic({ isOpen, onClose, disciplinaId, initialNome, onSuccess });
 
   return (
@@ -42,14 +45,22 @@ const FormDisciplina = ({ isOpen, onClose, disciplinaId, initialNome, onSuccess 
                   placeholder="Nome da disciplina"
                 />
               </FormControl>
-              <Button 
-                type="submit" 
-                colorScheme="purple" 
-                width="full"
-                isLoading={isLoading}
-              >
-                {disciplinaId ? 'Atualizar' : 'Salvar'}
-              </Button>
+              <Flex gap={4} justify="space-between" mt={4}>
+                <Button 
+                  colorScheme="purple" 
+                  onClick={handleCancelar}
+                >
+                  Cancelar
+                </Button>
+                <Button 
+                  type="submit" 
+                  colorScheme="purple"
+                  isLoading={isLoading}
+                  isDisabled={!hasChanges}
+                >
+                  {disciplinaId ? 'Atualizar' : 'Salvar'}
+                </Button>
+              </Flex>
             </form>
           </Box>
         </ModalBody>

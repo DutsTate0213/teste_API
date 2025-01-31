@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { insertProfessor } from "../../../service/ProfessorService";
 import { useToast } from "@chakra-ui/react";
 
 const useFormProfessorLogic = (onClose) => {
     const [professor, setProfessor] = useState({});
+    const [hasChanges, setHasChanges] = useState(false);
+    const [initialState, setInitialState] = useState({});
     const toast = useToast();
+
+    useEffect(() => {
+        setInitialState({});
+        setProfessor({});
+        setHasChanges(false);
+    }, []);
 
     const handleSubmitProfessor = async () => {
         try {
@@ -27,7 +35,7 @@ const useFormProfessorLogic = (onClose) => {
                 duration: 3000,
                 isClosable: true,
             });
-            handleCancelar();
+            setHasChanges(false);
             onClose();
         } catch (error) {
             toast({
@@ -42,14 +50,29 @@ const useFormProfessorLogic = (onClose) => {
     }
 
     const handleCancelar = () => {
-        setProfessor({});
-    }
+        if (hasChanges) {
+            const confirmCancel = window.confirm("Tem certeza de que deseja cancelar as alterações?");
+            if (confirmCancel) {
+                setProfessor(initialState);
+                setHasChanges(false);
+                onClose();
+            }
+        } else {
+            onClose();
+        }
+    };
+
+    const handleProfessorChange = (newValue) => {
+        setProfessor(newValue);
+        setHasChanges(JSON.stringify(newValue) !== JSON.stringify(initialState));
+    };
 
     return {
         professor,
-        setProfessor,
+        setProfessor: handleProfessorChange,
         handleSubmitProfessor,
-        handleCancelar
+        handleCancelar,
+        hasChanges
     };
 }
 

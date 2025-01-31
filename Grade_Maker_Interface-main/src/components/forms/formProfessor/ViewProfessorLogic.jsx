@@ -60,8 +60,18 @@ const useViewProfessorLogic = (professor) => {
     setDisponibilidades(disponibilidadesFiltradas);
   }, [anoSelecionado, semestreSelecionado, todasDisponibilidades]);
 
+  const disponibilidadesAgrupadas = disponibilidades.reduce((acc, disp) => {
+    const diaKey = disp.diaSemana.descricao;
+    if (!acc[diaKey]) {
+      acc[diaKey] = [];
+    }
+    acc[diaKey].push(disp);
+    return acc;
+  }, {});
+
   return {
     disponibilidades,
+    disponibilidadesAgrupadas,
     anoSelecionado,
     setAnoSelecionado,
     semestreSelecionado,

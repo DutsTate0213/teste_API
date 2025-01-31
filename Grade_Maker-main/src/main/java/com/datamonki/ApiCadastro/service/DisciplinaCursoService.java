@@ -82,6 +82,14 @@ public class DisciplinaCursoService {
             .body(new ApiResponse("Conexão entre Disciplina e Curso com o id '"+ id_disciplina +"' encontrado com sucesso", disciplinaCursos));
     }
 
+    public ResponseEntity<ApiResponse> findByIdCurso(Integer id_curso) {
+        verificarIdCurso(id_curso);
+
+        List<DisciplinaCurso> disciplinaCursos = disciplinaCursoRepository.findByCursoId(id_curso);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse("Conexão entre Disciplina e Curso com o id '"+ id_curso +"' encontrado com sucesso", disciplinaCursos));
+    }
+
     @Transactional
     public ResponseEntity<ApiResponse> update(Integer id_disciplinaCurso,DisciplinaCursoDto DisciplinaCursoDto){
         verificarIdDisciplinaCurso(id_disciplinaCurso);
@@ -110,5 +118,27 @@ public class DisciplinaCursoService {
         DisciplinaCurso disciplinaCursos = disciplinaCursoRepository.findById(id_disciplinaCurso).get();
         disciplinaCursoRepository.deleteById(id_disciplinaCurso);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Conexão entre Disciplina e Curso com o id '"+ id_disciplinaCurso +"' foi deletado com sucesso\"", disciplinaCursos));
+    }
+
+    @Transactional
+    public ResponseEntity<ApiResponse> deleteByCursoId(Integer id_curso) {
+        verificarIdCurso(id_curso);
+        
+        List<DisciplinaCurso> disciplinaCursos = disciplinaCursoRepository.findByCursoId(id_curso);
+        disciplinaCursoRepository.deleteByCursoId(id_curso);
+        
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse("Todas as conexões do curso com id '" + id_curso + "' foram deletadas com sucesso", disciplinaCursos));
+    }
+
+    @Transactional
+    public ResponseEntity<ApiResponse> deleteByDisciplinaId(Integer id_disciplina) {
+        verificarIdDisciplina(id_disciplina);
+        
+        List<DisciplinaCurso> disciplinaCursos = disciplinaCursoRepository.findByDisciplinaId(id_disciplina);
+        disciplinaCursoRepository.deleteByDisciplinaId(id_disciplina);
+        
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse("Todas as conexões da disciplina com id '" + id_disciplina + "' foram deletadas com sucesso", disciplinaCursos));
     }    
 }

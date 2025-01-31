@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/global.css";
-import { Heading, Box, Flex, Text, Circle, Button } from "@chakra-ui/react";
+import { Heading, Box, Flex, Text, Circle, Button, SimpleGrid } from "@chakra-ui/react";
 import { getProfessor, getProfessorDisciplina, getProfessorOrderByNome } from "../service/ProfessorService";
 import FormProfessor from "../components/forms/formProfessor/FormProfessor"; // Certifique-se de importar o FormProfessor 
 import ViewProfessor from "../components/forms/formProfessor/ViewProfessor";
@@ -84,63 +84,65 @@ const Professor = () => {
             gap={4}
             rowGap={20}
           >
-            {professores.map((professor, index) => (
-              <Button
-                key={index}
-                as="div"
-                variant="unstyled"
-                w={{ base: "100%", sm: "48%", md: "45%", lg: "35%" }}
-                mb={1}
-                onClick={() => openView(professor)}
-                _hover={{
-                  backgroundColor: "purple.600",
-                  cursor: "pointer",
-                }}
-              >
-                <Box
-                  bg="purple.800"
-                  color="white"
-                  p={5}
-                  borderRadius="lg"
-                  display="flex"
-                  alignItems="center"
-                  h="auto"
-                  overflow="hidden"
+            <SimpleGrid columns={[2, null, 3]} spacing='60px' width="100%">
+              {professores.map((professor, index) => (
+                <Button
+                  key={index}
+                  as="div"
+                  variant="unstyled"
+                  w={{ base: "100%", sm: "100%", md: "100%", lg: "100%" }}
+                  mb={1}
+                  onClick={() => openView(professor)}
+                  _hover={{
+                    backgroundColor: "purple.600",
+                    cursor: "pointer",
+                  }}
                 >
-                  <Circle size="50px" bg="purple.500" mr={4}>
-                    <Text
-                      fontSize={{ base: "sm", md: "md", lg: "lg" }}
-                      fontWeight="bold"
-                    >
-                      {professor.nome[0] + professor.nome[1]}
-                    </Text>
-                  </Circle>
-                  <Box>
-                    <Text
-                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
-                      fontWeight="bold"
-                      maxW="200px"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      display="inline-block"
-                    >
-                      {professor.nome}
-                    </Text>
-                    <Text
-                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
-                      maxW="200px"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      display="inline-block"
-                    >
-                      {professor.type}
-                    </Text>
+                  <Box
+                    bg="purple.800"
+                    color="white"
+                    p={5}
+                    borderRadius="lg"
+                    display="flex"
+                    alignItems="center"
+                    h="auto"
+                    overflow="hidden"
+                  >
+                    <Circle size="50px" bg="purple.500" mr={4}>
+                      <Text
+                        fontSize={{ base: "sm", md: "md", lg: "lg" }}
+                        fontWeight="bold"
+                      >
+                        {professor.nome[0] + professor.nome[1]}
+                      </Text>
+                    </Circle>
+                    <Box>
+                      <Text
+                        fontSize={{ base: "xs", md: "sm", lg: "md" }}
+                        fontWeight="bold"
+                        maxW="200px"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        display="inline-block"
+                      >
+                        {professor.nome}
+                      </Text>
+                      <Text
+                        fontSize={{ base: "xs", md: "sm", lg: "md" }}
+                        maxW="200px"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        display="inline-block"
+                      >
+                        {professor.type}
+                      </Text>
+                    </Box>
                   </Box>
-                </Box>
-              </Button>
-            ))}
+                </Button>
+              ))}
+            </SimpleGrid>
           </Flex>
         </Flex>
 
