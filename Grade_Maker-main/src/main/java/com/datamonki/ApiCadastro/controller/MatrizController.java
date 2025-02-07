@@ -26,7 +26,17 @@ public class MatrizController {
     public ResponseEntity<ApiResponse> getById(@PathVariable Integer id) {
         return matrizService.getById(id);
     }
-    
+
+    @GetMapping("/turma/{id}")
+    public ResponseEntity<ApiResponse> getByIdTurma(@PathVariable Integer id) {
+        return matrizService.getByIdTurma(id);
+    }
+
+    @GetMapping("/disciplina/{id}")
+    public ResponseEntity<ApiResponse> getByIdDisciplina(@PathVariable Integer id) {
+        return matrizService.getByIdDisciplina(id);
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse> getAll() {
         return matrizService.getAll();
@@ -42,6 +52,18 @@ public class MatrizController {
     @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
     public ResponseEntity<ApiResponse> delete() {
         return matrizService.deleteAll();
+    }
+
+    @DeleteMapping("/turma/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
+    public ResponseEntity<ApiResponse> deleteByIdTurma(@PathVariable Integer id) {
+        return matrizService.deleteByIdTurma(id);
+    }
+
+    @DeleteMapping("/disciplina/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
+    public ResponseEntity<ApiResponse> deleteByIdDisciplina(@PathVariable Integer id) {
+        return matrizService.deleteByIdDisciplina(id);
     }
     
     @PutMapping("/{id}")

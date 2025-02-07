@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.datamonki.ApiCadastro.dto.MatrizDto;
 import com.datamonki.ApiCadastro.exceptions.IdNotFoundException;
-import com.datamonki.ApiCadastro.exceptions.ValidationException;
 import com.datamonki.ApiCadastro.model.Matriz;
 import com.datamonki.ApiCadastro.repository.TurmaRepository;
 import com.datamonki.ApiCadastro.repository.MatrizRepository;
@@ -53,10 +52,6 @@ public class MatrizService {
         verificarIdDisciplina(matrizDto.id_disciplina());
         verificarIdTurma(matrizDto.id_turma());
 
-        if (matrizRepository.verifyRepeticao(matrizDto.id_turma(), matrizDto.id_disciplina())) {
-            throw new ValidationException(List.of("Esta disciplina já está cadastrada para esta turma"));
-        }
-
         Matriz matriz = new Matriz();
         matriz.setDisciplina(disciplinaRepository.findById(matrizDto.id_disciplina()).get());
         matriz.setTurma(turmaRepository.findById(matrizDto.id_turma()).get());
@@ -74,6 +69,18 @@ public class MatrizService {
         verificarIdMatriz(id_matriz);
         Matriz matriz = matrizRepository.findById(id_matriz).get();
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Conexão entre Disciplina e Turma com o id '"+ id_matriz +"' encontrada com sucesso", matriz));
+    }
+
+    public ResponseEntity<ApiResponse> getByIdTurma(Integer id_turma) {
+        verificarIdTurma(id_turma);
+        List<Matriz> matrizes = matrizRepository.findByTurmaId(id_turma);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Lista de conexões entre Disciplina e Turma com o id '"+ id_turma +"'", matrizes));
+    }
+
+    public ResponseEntity<ApiResponse> getByIdDisciplina(Integer id_disciplina) {
+        verificarIdDisciplina(id_disciplina);
+        List<Matriz> matrizes = matrizRepository.findByDisciplinaId(id_disciplina);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Lista de conexões entre Disciplina e Turma com o id '"+ id_disciplina +"'", matrizes));
     }
     
     @Transactional
@@ -103,4 +110,18 @@ public class MatrizService {
         matrizRepository.deleteById(id_matriz);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Conexão entre Disciplina e Turma com o id '"+ id_matriz +"' foi deletada com sucesso", matriz));
     }
+
+    public ResponseEntity<ApiResponse> deleteByIdTurma(Integer id_turma) {
+        verificarIdTurma(id_turma);
+        List<Matriz> matrizes = matrizRepository.findByTurmaId(id_turma);
+        matrizRepository.deleteByTurmaId(id_turma);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Todas as conexões entre Disciplina e Turma com o id '"+ id_turma +"' foram deletadas com sucesso", matrizes));
+    }
+
+    public ResponseEntity<ApiResponse> deleteByIdDisciplina(Integer id_disciplina) {
+        verificarIdDisciplina(id_disciplina);
+        List<Matriz> matrizes = matrizRepository.findByDisciplinaId(id_disciplina);
+        matrizRepository.deleteByDisciplinaId(id_disciplina);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Todas as conexões entre Disciplina e Turma com o id '"+ id_disciplina +"' foram deletadas com sucesso", matrizes));
+    }   
 }

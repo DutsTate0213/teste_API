@@ -78,4 +78,10 @@ public class GlobalExceptionHandler  {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
             .body(new ApiResponse("Acesso negado: " + e.getMessage(), null));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> Exception(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ApiResponse("Erro interno do servidor: " + e.getMessage(), null));
+    }
 }

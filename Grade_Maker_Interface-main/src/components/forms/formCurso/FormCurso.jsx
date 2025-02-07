@@ -99,7 +99,11 @@ const FormCurso = ({ isOpen, onClose, cursoId, initialNome, onSuccess }) => {
                             size="sm"
                             variant="outline"
                             width="100%"
-                            color="black"
+                            color="gray.50"
+                            _hover={{
+                              backgroundColor: "gray.50",
+                              color: "black",
+                            }}
                             onClick={() => moverParaSelecionadas(disciplina)}
                           >
                             {disciplina.nome}
@@ -170,10 +174,17 @@ const FormCurso = ({ isOpen, onClose, cursoId, initialNome, onSuccess }) => {
                             size="sm"
                             variant="outline"
                             width="100%"
-                            color="black"
+                            color="gray.50"
+                            _hover={{
+                              backgroundColor: "gray.50",
+                              color: "black",
+                            }}
                             onClick={() => moverParaDisponiveis(disciplina)}
+
+
                           >
                             {disciplina.nome}
+
                           </Button>
                         </ListItem>
                       ))}

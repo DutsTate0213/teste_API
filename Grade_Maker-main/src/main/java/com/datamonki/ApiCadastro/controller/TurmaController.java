@@ -49,4 +49,15 @@ public class TurmaController {
     public ResponseEntity<ApiResponse> update(@PathVariable Integer id, @RequestBody TurmaDto turmaDto) {
         return turmaService.update(id, turmaDto);
     }
+    
+    @GetMapping("/curso/{id}")
+    public ResponseEntity<ApiResponse> findByIdCurso(@PathVariable Integer id) {
+        return turmaService.findByIdCurso(id);
+    }
+    
+    @DeleteMapping("/curso/{id}")
+    @PreAuthorize("hasAnyAuthority('ACESSO_ADMIN','ACESSO_COORDENADOR')")
+    public ResponseEntity<ApiResponse> deleteByIdCurso(@PathVariable Integer id) {
+        return turmaService.deleteByIdCurso(id);
+    }
 }

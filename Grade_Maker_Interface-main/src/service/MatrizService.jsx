@@ -14,6 +14,36 @@ export const getMatriz = async () => {
   }
 };
 
+export const getMatrizById = async (id) => {
+  try {
+    const resposta = await Api.get(`/matriz/${id}`);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao buscar matriz:", erro);
+    throw erro;
+  }
+};
+
+export const getMatrizByTurmaId = async (id) => {
+  try {
+    const resposta = await Api.get(`/matriz/turma/${id}`);
+    return resposta?.data || [];
+  } catch (erro) {
+    console.error("Erro ao buscar matriz por turma:", erro);
+    throw erro;
+  }
+};
+
+export const getMatrizByDisciplinaId = async (id) => {
+  try {
+    const resposta = await Api.get(`/matriz/disciplina/${id}`);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao buscar matriz por disciplina:", erro);
+    throw erro;
+  }
+};
+
 export const insertMatriz = async (objectMatriz) => {
   try {
     const resposta = await Api.post("/matriz", objectMatriz);
@@ -40,6 +70,36 @@ export const deleteMatriz = async (id) => {
     return resposta;
   } catch (erro) {
     console.error("Erro ao excluir matriz:", erro);
+    throw erro;
+  }
+};
+
+export const deleteAllMatriz = async () => {
+  try {
+    const resposta = await Api.delete("/matriz");
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao excluir todas as matrizes:", erro);
+    throw erro;
+  }
+};
+
+export const deleteMatrizByTurmaId = async (id) => {
+  try {
+    const resposta = await Api.delete(`/matriz/turma/${id}`);
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao excluir matriz por turma:", erro);
+    throw erro;
+  }
+};
+
+export const deleteMatrizByDisciplinaId = async (id) => {
+  try {
+    const resposta = await Api.delete(`/matriz/disciplina/${id}`);
+    return resposta;
+  } catch (erro) {
+    console.error("Erro ao excluir matriz por disciplina:", erro);
     throw erro;
   }
 };
